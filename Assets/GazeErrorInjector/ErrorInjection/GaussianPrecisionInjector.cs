@@ -2,17 +2,13 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class GaussianPrecisionInjector : MonoBehaviour
+namespace GazeErrorInjector
 {
-    // Start is called before the first frame update
-    void Start()
+    public class GaussianPrecisionInjector : PrecisionInjector
     {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
+        public override void Inject(Vector3 direction)
+        {
+            throw new System.NotImplementedException();
+        }
     }
 }
