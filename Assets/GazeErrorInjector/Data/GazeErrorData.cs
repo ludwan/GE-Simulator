@@ -21,10 +21,6 @@ namespace GazeErrorInjector
         // public float Distance;  
         // public bool isDistanceValid;
         // public bool isRayValid;
-
-
-
-
     }
 }
 

@@ -2,17 +2,16 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class AccuracyInjector : MonoBehaviour
+namespace GazeErrorInjector
 {
-    // Start is called before the first frame update
-    void Start()
+    public class AccuracyInjector : Injector
     {
-        
-    }
+        [Range(0f, 360f)] public float AccuracyDirection = 0;
+        [Range(0f, 10f)] public float AccuracyAmplitude = 0;
 
-    // Update is called once per frame
-    void Update()
-    {
-        
+        public override void Inject(Vector3 direction)
+        {
+            throw new System.NotImplementedException();
+        }
     }
 }

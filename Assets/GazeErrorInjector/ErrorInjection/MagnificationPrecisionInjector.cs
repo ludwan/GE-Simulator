@@ -2,17 +2,14 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class MagnificationPrecisionInjector : MonoBehaviour
-{
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
 
-    // Update is called once per frame
-    void Update()
+namespace GazeErrorInjector
+{
+    public class MagnificationPrecisionInjector : PrecisionInjector
     {
-        
+        public override void Inject(Vector3 direction)
+        {
+            throw new System.NotImplementedException();
+        }
     }
 }
