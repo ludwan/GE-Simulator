@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace GazeErrorInjector
 {
-    public interface EyeTrackerProvider
+    public interface EyeTracker
     {
         public GazeErrorData LatestData {get;}       
         public bool Initialize();
