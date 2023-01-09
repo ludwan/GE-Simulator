@@ -35,7 +35,12 @@ namespace GazeErrorInjector
                 
                 _localEyeGazeData.Timestamp = Time.unscaledTime;
                 _localEyeGazeData.isRayValid = SRanipal_Eye.GetGazeRay(GazeIndex.COMBINE, out _localEyeGazeData.Origin, out _localEyeGazeData.Direction);
-            }            
+            }
+
+            public Transform GetOriginTransform() 
+            { 
+                return Camera.main.transform;
+            }
 
             public void Destroy() { }
         #else
@@ -46,6 +51,8 @@ namespace GazeErrorInjector
             }
 
             public void GetGazeData() { }
+
+            public Transform GetOriginTransform() { return null; }
 
             public void Destroy() { }
         #endif

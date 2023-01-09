@@ -31,6 +31,16 @@ namespace GazeErrorInjector
                 throw new System.NotImplementedException();
             }
 
+            public void GetOrigin()
+            {
+                throw new System.NotImplementedException();
+            }
+
+            public Transform GetOriginTransform() 
+            { 
+                throw new System.NotImplementedException();
+            }
+            
             public void Destroy()
             {
                 throw new System.NotImplementedException();
@@ -44,6 +54,8 @@ namespace GazeErrorInjector
             }
 
             public void GetGazeData() { }
+
+            public Transform GetOriginTransform() { return null; }
 
             public void Destroy() { }
         #endif

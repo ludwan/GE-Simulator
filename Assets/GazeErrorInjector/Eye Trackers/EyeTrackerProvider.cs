@@ -9,6 +9,7 @@ namespace GazeErrorInjector
         public GazeErrorData LatestData {get;}       
         public bool Initialize();
         public void GetGazeData();
+        public Transform GetOriginTransform();
         public void Destroy();
     }
 }
