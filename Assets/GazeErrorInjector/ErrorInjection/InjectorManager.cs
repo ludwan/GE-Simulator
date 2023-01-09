@@ -29,25 +29,28 @@ namespace GazeErrorInjector
         [Header("Gaze")]
         public GazeMode gazeMode;
 
-        [Range(0f, 360f)] public float gazeAccuracyErrorDirection;
-        public float gazeAccuracyError;
-        public PrecisionErrorMode precisionErrorMode;
-        public float precisionError;
-        public float dataLossProbability;
+        public GazeErrorSettings cyclopeanSettings;
+        // [Range(0f, 360f)] public float gazeAccuracyErrorDirection;
+        // public float gazeAccuracyError;
+        // public PrecisionErrorMode precisionErrorMode;
+        // public float precisionError;
+        // public float dataLossProbability;
 
         [Header("Right Eye")]
-        [Range(0f, 360f)] public float rightAccuracyErrorDirection;
-        public float rightAccuracyError;
-        public PrecisionErrorMode rightPrecisionErrorMode;
-        [Range(0f, 10f)] public float rightPrecisionError;
-        [Range(0f, 1f)] public float rightDataLossProbability;
+        public GazeErrorSettings rightEyeSettings;
+        // [Range(0f, 360f)] public float rightAccuracyErrorDirection;
+        // public float rightAccuracyError;
+        // public PrecisionErrorMode rightPrecisionErrorMode;
+        // [Range(0f, 10f)] public float rightPrecisionError;
+        // [Range(0f, 1f)] public float rightDataLossProbability;
 
         [Header("Left Eye")]
-        [Range(0f, 360f)] public float leftAccuracyErrorDirection;
-        public float leftAccuracyError;
-        public PrecisionErrorMode leftPrecisionErrorMode;
-        [Range(0f, 10f)] public float leftPrecisionError;
-        [Range(0f, 1f)] public float leftDataLossProbability;
+        public GazeErrorSettings leftEyeSettings;
+        // [Range(0f, 360f)] public float leftAccuracyErrorDirection;
+        // public float leftAccuracyError;
+        // public PrecisionErrorMode leftPrecisionErrorMode;
+        // [Range(0f, 10f)] public float leftPrecisionError;
+        // [Range(0f, 1f)] public float leftDataLossProbability;
 
 
         private string _compilerFlagString;
@@ -62,7 +65,9 @@ namespace GazeErrorInjector
         // Start is called before the first frame update
         void Start()
         {
-            
+            AddComponents("Cyclopean Eye");
+            AddComponents("Right Eye");
+            AddComponents("Left Eye");
         }
 
         // Update is called once per frame
@@ -131,6 +136,13 @@ namespace GazeErrorInjector
                 Debug.LogError("There was an error instantiating the Eye Tracker: " + eyeTrackerName);
             }
             return null;
+        }
+
+        private GameObject AddComponents(string name)
+        {
+            GameObject go = new GameObject(name, typeof(AccuracyInjector), typeof(GaussianPrecisionInjector), typeof(UniformPrecisionInjector), typeof(DataLossInjector));
+            go.transform.parent = this.transform;
+            return go;
         }
     }
 }

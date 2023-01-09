@@ -7,7 +7,9 @@ namespace GazeErrorInjector
     public abstract class Injector : MonoBehaviour
     {
         [SerializeField] protected Transform _hmd;
+        [SerializeField] public InjectorManager Manager;
 
+        //TODO: FIX TO MAKE DEVICE INDEPENDENT
         protected void Start() 
         {
             if (_hmd == null)
