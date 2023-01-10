@@ -23,8 +23,6 @@ namespace GazeErrorInjector
             }
         }
 
-        private EyeData _latestEyeGazeData = new EyeData();
-        
         #if HOLOLENS_SDK
         private IMixedRealityEyeGazeProvider _eyeGazeProvider;
 
@@ -39,12 +37,14 @@ namespace GazeErrorInjector
                 if (_eyeGazeProvider.IsEyeTrackingEnabledAndValid == false)
                     return null;
 
-                _latestEyeGazeData.Timestamp = Time.unscaledTime;
-                _latestEyeGazeData.GazeOrigin = _eyeGazeProvider.GazeOrigin;
-                _latestEyeGazeData.GazeDirection = _eyeGazeProvider.GazeDirection;
-                _latestEyeGazeData.isDataValid = _eyeGazeProvider.IsEyeTrackingEnabledAndValid;
+                GazeErrorData gazeErrorData = new GazeErrorData();
 
-                return null;
+                gazeErrorData.Gaze.Timestamp = Time.unscaledTime;
+                gazeErrorData.Gaze.GazeOrigin = _eyeGazeProvider.GazeOrigin;
+                gazeErrorData.Gaze.GazeDirection = _eyeGazeProvider.GazeDirection;
+                gazeErrorData.Gaze.isDataValid = _eyeGazeProvider.IsEyeTrackingEnabledAndValid;
+
+                return gazeErrorData;
             }
 
             public void GetOrigin()
