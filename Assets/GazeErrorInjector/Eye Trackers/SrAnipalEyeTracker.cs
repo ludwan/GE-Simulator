@@ -8,19 +8,11 @@ using UnityEngine;
 
 namespace GazeErrorInjector
 {
-    public class SrAnipalEyeTracker : MonoBehaviour, EyeTracker
+    public class SrAnipalEyeTracker : EyeTracker
     {
-        private GazeErrorData _latestdata = new GazeErrorData();
-        public GazeErrorData LatestData 
-        {
-            get
-            {
-                return _latestdata;
-            }
-        }
 
         #if VIVE_SDK
-            public bool Initialize()
+            public override bool Initialize()
             {
                 //TODO: ADD GAMOBJECT.
                 if (!SRanipal_Eye_API.IsViveProEye()) return false;
@@ -28,33 +20,30 @@ namespace GazeErrorInjector
                 return (SRanipal_Eye_Framework.Status == SRanipal_Eye_Framework.FrameworkStatus.WORKING);                
             }
             
-            public void GetGazeData()
+            public override GazeErrorData GetGazeData()
             {
                 if (SRanipal_Eye_Framework.Status != SRanipal_Eye_Framework.FrameworkStatus.WORKING &&
                             SRanipal_Eye_Framework.Status != SRanipal_Eye_Framework.FrameworkStatus.NOT_SUPPORT) return;
                 
                 _localEyeGazeData.Timestamp = Time.unscaledTime;
                 _localEyeGazeData.isRayValid = SRanipal_Eye.GetGazeRay(GazeIndex.COMBINE, out _localEyeGazeData.Origin, out _localEyeGazeData.Direction);
+
+                return null;
             }
 
-            public Transform GetOriginTransform() 
+            public override Transform GetOriginTransform() 
             { 
                 return Camera.main.transform;
             }
 
-            public void Destroy() { }
+            public override void Destroy() { }
         #else
-            public bool Initialize()
+        //TODO A LOT OF CODE REPETITION WITHIN THIS PART.
+            public override bool Initialize()
             {
                 Debug.LogError("Could not initialize SRanipal Eye Tracker.");
                 return false;
             }
-
-            public void GetGazeData() { }
-
-            public Transform GetOriginTransform() { return null; }
-
-            public void Destroy() { }
         #endif
         
     }

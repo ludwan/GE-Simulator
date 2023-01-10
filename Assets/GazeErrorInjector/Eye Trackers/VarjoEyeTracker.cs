@@ -8,49 +8,35 @@ using UnityEngine;
 
 namespace GazeErrorInjector
 {
-    public class VarjoEyeTracker : MonoBehaviour, EyeTracker
+    public class VarjoEyeTracker : EyeTracker
     {
-        private GazeErrorData _latestdata = new GazeErrorData();
-        public GazeErrorData LatestData 
-        {
-            get
-            {
-                return _latestdata;
-            }
-        }
 
         #if VARJO_SDK
-            public bool Initialize()
+            public override bool Initialize()
             {
                 throw new System.NotImplementedException();
             }
 
-            public void GetGazeData()
+            public override GazeErrorData GetGazeData()
             {
                 throw new System.NotImplementedException();
             }
 
-            public Transform GetOriginTransform() 
+            public override Transform GetOriginTransform() 
             { 
                 throw new System.NotImplementedException();
             }
 
-            public void Destroy()
+            public override void Destroy()
             {
                 throw new System.NotImplementedException();
             }
         #else
-            public bool Initialize()
+            public override bool Initialize()
             {
                 Debug.LogError("Could not initialize Varjo Eye Tracker.");
                 return false;
             }
-
-            public void GetGazeData() { }
-
-            public Transform GetOriginTransform() { return null; }
-
-            public void Destroy() { }
         #endif
     }
 }

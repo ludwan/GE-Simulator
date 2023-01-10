@@ -8,7 +8,7 @@ using UnityEngine;
 
 namespace GazeErrorInjector
 {
-    public class HoloLensEyeTracker : MonoBehaviour, EyeTracker
+    public class HoloLensEyeTracker : MonoBehaviour, IEyeTracker
     {
         private GazeErrorData _latestdata = new GazeErrorData();
         public GazeErrorData LatestData 
@@ -26,7 +26,7 @@ namespace GazeErrorInjector
                 throw new System.NotImplementedException();
             }
 
-            public void GetGazeData()
+            public GazeErrorData GetGazeData()
             {
                 throw new System.NotImplementedException();
             }
@@ -40,20 +40,22 @@ namespace GazeErrorInjector
             { 
                 throw new System.NotImplementedException();
             }
-            
+
             public void Destroy()
             {
                 throw new System.NotImplementedException();
             }
 
         #else
+        //TODO A LOT OF CODE REPETITION WITHIN THIS PART.
+
             public bool Initialize()
             {
                 Debug.LogError("Could not initialize HoloLens 2 Eye Tracker.");
                 return false;
             }
 
-            public void GetGazeData() { }
+            public GazeErrorData GetGazeData() { return null; }
 
             public Transform GetOriginTransform() { return null; }
 

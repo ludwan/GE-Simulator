@@ -12,10 +12,7 @@ namespace GazeErrorInjector
         //TODO: FIX TO MAKE DEVICE INDEPENDENT
         protected void Start() 
         {
-            if (_hmd == null)
-            {
-                _hmd = Camera.main.transform;
-            }
+            _hmd = Manager.EyeTracker.GetOriginTransform();
         }
 
         public abstract Vector3 Inject(Vector3 direction);

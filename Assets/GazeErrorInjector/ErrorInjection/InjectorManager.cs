@@ -30,33 +30,25 @@ namespace GazeErrorInjector
         public GazeMode gazeMode;
 
         public GazeErrorSettings cyclopeanSettings;
-        // [Range(0f, 360f)] public float gazeAccuracyErrorDirection;
-        // public float gazeAccuracyError;
-        // public PrecisionErrorMode precisionErrorMode;
-        // public float precisionError;
-        // public float dataLossProbability;
 
         [Header("Right Eye")]
         public GazeErrorSettings rightEyeSettings;
-        // [Range(0f, 360f)] public float rightAccuracyErrorDirection;
-        // public float rightAccuracyError;
-        // public PrecisionErrorMode rightPrecisionErrorMode;
-        // [Range(0f, 10f)] public float rightPrecisionError;
-        // [Range(0f, 1f)] public float rightDataLossProbability;
 
         [Header("Left Eye")]
         public GazeErrorSettings leftEyeSettings;
-        // [Range(0f, 360f)] public float leftAccuracyErrorDirection;
-        // public float leftAccuracyError;
-        // public PrecisionErrorMode leftPrecisionErrorMode;
-        // [Range(0f, 10f)] public float leftPrecisionError;
-        // [Range(0f, 1f)] public float leftDataLossProbability;
-
 
         private string _compilerFlagString;
         private string _eyeTrackerName;
         private GazeErrorData _gazeData;
         private EyeTracker _eyeTracker;
+
+        public EyeTracker EyeTracker
+        {
+            get
+            {
+                return _eyeTracker;
+            }
+        }
 
         //
         public event Action OnNewGazeData;
@@ -86,9 +78,19 @@ namespace GazeErrorInjector
             isActive = !isActive;
         }
 
+        private void OnEyeTrackerData ()
+        {
+            
+        }
+
         private void SubscribeToGaze()
         {
         
+        }
+
+        private void UnsubscribeToGaze()
+        {
+
         }
 
         private void InitEyeTracker()

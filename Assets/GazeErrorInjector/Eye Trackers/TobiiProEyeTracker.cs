@@ -8,7 +8,7 @@ using UnityEngine;
 
 namespace GazeErrorInjector
 {
-    public class TobiiProEyeTracker : MonoBehaviour, EyeTracker
+    public class TobiiProEyeTracker : MonoBehaviour, IEyeTracker
     {
         private GazeErrorData _latestdata = new GazeErrorData();
         public GazeErrorData LatestData 
@@ -25,7 +25,7 @@ namespace GazeErrorInjector
                 throw new System.NotImplementedException();
             }
 
-            public void GetGazeData()
+            public GazeErrorData GetGazeData()
             {
                 throw new System.NotImplementedException();
             }
@@ -46,7 +46,7 @@ namespace GazeErrorInjector
                 return false;
             }
 
-            public void GetGazeData() { }
+            public GazeErrorData GetGazeData() { return null; }
 
             public Transform GetOriginTransform() { return null; }
 

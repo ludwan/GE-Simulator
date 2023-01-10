@@ -4,11 +4,11 @@ using UnityEngine;
 
 namespace GazeErrorInjector
 {
-    public interface EyeTracker
+    public interface IEyeTracker
     {
         public GazeErrorData LatestData {get;}       
         public bool Initialize();
-        public void GetGazeData();
+        public GazeErrorData GetGazeData();
         public Transform GetOriginTransform();
         public void Destroy();
     }
