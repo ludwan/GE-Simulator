@@ -1,15 +1,19 @@
+#define HOLOLENS_SDK
+
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 #if HOLOLENS_SDK
-
+using Microsoft.MixedReality.Toolkit;
+using Microsoft.MixedReality.Toolkit.Input;
 #endif
 
 namespace GazeErrorInjector
 {
     public class HoloLensEyeTracker : MonoBehaviour, IEyeTracker
     {
+
         private GazeErrorData _latestdata = new GazeErrorData();
         public GazeErrorData LatestData 
         {
@@ -19,16 +23,28 @@ namespace GazeErrorInjector
             }
         }
 
+        private EyeData _latestEyeGazeData = new EyeData();
+        
         #if HOLOLENS_SDK
+        private IMixedRealityEyeGazeProvider _eyeGazeProvider;
 
             public bool Initialize()
             {
-                throw new System.NotImplementedException();
+                _eyeGazeProvider = CoreServices.InputSystem.EyeGazeProvider;
+                return _eyeGazeProvider.IsEyeTrackingEnabled;
             }
 
             public GazeErrorData GetGazeData()
             {
-                throw new System.NotImplementedException();
+                if (_eyeGazeProvider.IsEyeTrackingEnabledAndValid == false)
+                    return null;
+
+                _latestEyeGazeData.Timestamp = Time.unscaledTime;
+                _latestEyeGazeData.GazeOrigin = _eyeGazeProvider.GazeOrigin;
+                _latestEyeGazeData.GazeDirection = _eyeGazeProvider.GazeDirection;
+                _latestEyeGazeData.isDataValid = _eyeGazeProvider.IsEyeTrackingEnabledAndValid;
+
+                return null;
             }
 
             public void GetOrigin()
@@ -38,13 +54,10 @@ namespace GazeErrorInjector
 
             public Transform GetOriginTransform() 
             { 
-                throw new System.NotImplementedException();
+                return Camera.main.transform;
             }
 
-            public void Destroy()
-            {
-                throw new System.NotImplementedException();
-            }
+            public void Destroy() { }
 
         #else
         //TODO A LOT OF CODE REPETITION WITHIN THIS PART.
