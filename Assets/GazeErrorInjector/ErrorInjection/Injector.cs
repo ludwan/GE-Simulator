@@ -9,10 +9,9 @@ namespace GazeErrorInjector
         [SerializeField] protected Transform _hmd;
         [SerializeField] public InjectorManager Manager;
 
-        //TODO: FIX TO MAKE DEVICE INDEPENDENT
-        protected void Start() 
+        public void Init()
         {
-            _hmd = Manager.EyeTracker.GetOriginTransform();
+             _hmd = Manager.EyeTracker.GetOriginTransform();
         }
 
         public abstract Vector3 Inject(Vector3 direction);
