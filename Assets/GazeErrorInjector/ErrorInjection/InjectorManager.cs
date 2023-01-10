@@ -11,12 +11,11 @@ namespace GazeErrorInjector
         None,
         Independent,
         Dependent,
-        
     }
 
     public enum PrecisionErrorMode
     {
-        Magnification,
+        Uniform,
         Gaussian
     }
 
@@ -26,22 +25,22 @@ namespace GazeErrorInjector
         public KeyCode toggleKey = KeyCode.None;
 
         public EyeTrackerList EyeTrackerSDK;
-
-
-        [Header("Gaze")]
         public ErrorMode gazeMode;
-
-        public GazeErrorSettings cyclopeanSettings;
+        [Header("Gaze")]
+        public GazeErrorSettings gazeSettings;
+        private InjectorContainer _gazeInjectors;
 
         [Header("Right Eye")]
         public GazeErrorSettings rightEyeSettings;
+        private InjectorContainer _rightEyeInjectors;
 
         [Header("Left Eye")]
         public GazeErrorSettings leftEyeSettings;
+        private InjectorContainer _leftEyeInjectors;
 
+        private Dictionary<GazeErrorSettings, InjectorContainer> injectors = new Dictionary<GazeErrorSettings, InjectorContainer>();
         private string _compilerFlagString;
         private string _eyeTrackerName;
-        private GazeErrorData _gazeData;
         private EyeTracker _eyeTracker;
 
         public EyeTracker EyeTracker
@@ -52,30 +51,48 @@ namespace GazeErrorInjector
             }
         }
 
-        //
-        public event Action OnNewGazeData;
+        public delegate void NewErrorData(GazeErrorData data);
+        public event NewErrorData OnNewErrorData;
+
+        private GazeErrorData _latestErrorData;
+        public GazeErrorData LatestErrorData 
+        {
+            get
+            {
+                return _latestErrorData;
+            }
+            private set
+            {
+                _latestErrorData = value;
+                if(OnNewErrorData != null)
+                {
+                    OnNewErrorData(_latestErrorData);
+                }
+            }
+        }
 
         
         // Start is called before the first frame update
         void Start()
         {
-            AddComponents("Cyclopean Eye");
-            AddComponents("Right Eye");
-            AddComponents("Left Eye");
+            injectors.Add(gazeSettings, AddComponents("Gaze", gazeSettings));
+            injectors.Add(rightEyeSettings, AddComponents("Right Eye", rightEyeSettings));
+            injectors.Add(leftEyeSettings, AddComponents("Left Eye", leftEyeSettings));
         }
 
         // Update is called once per frame
         void Update()
         {
+            //TODO: EXPAND TO UNITY EVENT
             if(Input.GetKeyDown(toggleKey))
             {
-                ToggleErrorInjection();
+                ToggleErrors();
             }
 
             if(!isActive) return;
         }
 
-        public void ToggleErrorInjection()
+        public void ToggleErrors()
         {
             isActive = !isActive;
         }
@@ -84,11 +101,11 @@ namespace GazeErrorInjector
         {
             if(isActive)
             {
-
+                LatestErrorData = AddError(data);
             }
         }
 
-        private void InjectError(GazeErrorData data)
+        private GazeErrorData AddError(GazeErrorData data)
         {
             switch (gazeMode)
             {
@@ -101,10 +118,16 @@ namespace GazeErrorInjector
                 default:
                     break;
             }
+            return data;
         }
 
 
-        private void InjectDependentError(GazeErrorData data)
+        private void AddNoError(GazeErrorData data)
+        {
+
+        }
+
+        private void AddDependentError(GazeErrorData data)
         {
             //Left Eye
             
@@ -113,13 +136,18 @@ namespace GazeErrorInjector
             // Cyclopean Eye
         }
 
-        private void InjectIndependentError(GazeErrorData data)
+        private void AddIndependentError(GazeErrorData data)
         {
             //Left Eye
             
             // Right Eye
 
             // Cyclopean Eye
+        }
+
+        private void AddError()
+        {
+            
         }
 
         private void SubscribeToGaze()
@@ -179,11 +207,44 @@ namespace GazeErrorInjector
             return null;
         }
 
-        private GameObject AddComponents(string name)
+        private void UpdateErrorSettings(GazeErrorSettings settings)
         {
-            GameObject go = new GameObject(name, typeof(AccuracyInjector), typeof(GaussianPrecisionInjector), typeof(UniformPrecisionInjector), typeof(DataLossInjector));
+            InjectorContainer container = injectors[settings];
+            UpdateErrorSettings(container, settings);
+        }
+
+        private void UpdateErrorSettings(InjectorContainer container, GazeErrorSettings settings)
+        {
+            container.accuracy.AccuracyAmplitude = settings.gazeAccuracyError;
+            container.accuracy.AccuracyDirection = settings.gazeAccuracyErrorDirection;
+            container.gaussian.error = settings.precisionError;
+            container.uniform.error = settings.precisionError;
+            container.dataLoss.dataLossProbability = settings.dataLossProbability;
+        }
+
+        private InjectorContainer AddComponents(string name, GazeErrorSettings settings)
+        {
+            InjectorContainer container = new InjectorContainer();
+
+            GameObject go = new GameObject(name);//, typeof(AccuracyInjector), typeof(GaussianPrecisionInjector), typeof(UniformPrecisionInjector), typeof(DataLossInjector));
+            container.accuracy = go.AddComponent<AccuracyInjector>();
+            container.gaussian = go.AddComponent<GaussianPrecisionInjector>();
+            container.uniform = go.AddComponent<UniformPrecisionInjector>();
+            container.dataLoss = go.AddComponent<DataLossInjector>();
+
             go.transform.parent = this.transform;
-            return go;
+            container.obj = go;
+            UpdateErrorSettings(container, settings);
+            return container;
+        }
+
+        private class InjectorContainer
+        {
+            public GameObject obj;
+            public AccuracyInjector accuracy;
+            public GaussianPrecisionInjector gaussian;
+            public UniformPrecisionInjector uniform;
+            public DataLossInjector dataLoss; 
         }
     }
 }
