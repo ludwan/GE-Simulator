@@ -6,10 +6,12 @@ using UnityEditor;
 
 namespace GazeErrorInjector
 {
-    public enum GazeMode
+    public enum ErrorMode
     {
+        None,
         Independent,
-        Dependent
+        Dependent,
+        
     }
 
     public enum PrecisionErrorMode
@@ -27,7 +29,7 @@ namespace GazeErrorInjector
 
 
         [Header("Gaze")]
-        public GazeMode gazeMode;
+        public ErrorMode gazeMode;
 
         public GazeErrorSettings cyclopeanSettings;
 
@@ -78,19 +80,56 @@ namespace GazeErrorInjector
             isActive = !isActive;
         }
 
-        private void OnEyeTrackerData ()
+        private void OnEyeTrackerData (GazeErrorData data)
         {
+            if(isActive)
+            {
+
+            }
+        }
+
+        private void InjectError(GazeErrorData data)
+        {
+            switch (gazeMode)
+            {
+                case ErrorMode.None:
+                    break;
+                case ErrorMode.Dependent:
+                    break;
+                case ErrorMode.Independent:
+                    break;
+                default:
+                    break;
+            }
+        }
+
+
+        private void InjectDependentError(GazeErrorData data)
+        {
+            //Left Eye
             
+            // Right Eye
+
+            // Cyclopean Eye
+        }
+
+        private void InjectIndependentError(GazeErrorData data)
+        {
+            //Left Eye
+            
+            // Right Eye
+
+            // Cyclopean Eye
         }
 
         private void SubscribeToGaze()
         {
-        
+            _eyeTracker.OnNewGazeData += OnEyeTrackerData;
         }
 
         private void UnsubscribeToGaze()
         {
-
+            _eyeTracker.OnNewGazeData -= OnEyeTrackerData;
         }
 
         private void InitEyeTracker()
@@ -148,4 +187,3 @@ namespace GazeErrorInjector
         }
     }
 }
-
