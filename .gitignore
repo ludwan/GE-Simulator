@@ -71,5 +71,7 @@ crashlytics-build.properties
 /[Aa]ssets/[Ss]treamingAssets/aa.meta
 /[Aa]ssets/[Ss]treamingAssets/aa/*
 
-# For Eye Tracking Packages
-/[Aa]ssets/EyeTrackers/
+# For Eye Tracking and VR Packages
+/[Aa]ssets/[Pp]ackages/*
+# exception to the rule
+!/[Aa]ssets/[Pp]ackages/Instructions.txt
