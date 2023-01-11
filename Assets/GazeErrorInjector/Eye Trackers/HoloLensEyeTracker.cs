@@ -13,7 +13,7 @@ namespace GazeErrorInjector
     {
 
         private GazeErrorData _latestdata = new GazeErrorData();
-        public GazeErrorData LatestData 
+        public GazeErrorData LatestData
         {
             get
             {
@@ -21,7 +21,7 @@ namespace GazeErrorInjector
             }
         }
 
-        #if HOLOLENS_SDK
+#if HOLOLENS_SDK
         private IMixedRealityEyeGazeProvider _eyeGazeProvider;
 
             public bool Initialize()
@@ -42,6 +42,8 @@ namespace GazeErrorInjector
                 gazeErrorData.Gaze.GazeDirection = _eyeGazeProvider.GazeDirection;
                 gazeErrorData.Gaze.isDataValid = _eyeGazeProvider.IsEyeTrackingEnabledAndValid;
 
+                _latestdata = gazeErrorData;
+
                 return gazeErrorData;
             }
 
@@ -57,20 +59,20 @@ namespace GazeErrorInjector
 
             public void Destroy() { }
 
-        #else
+#else
         //TODO A LOT OF CODE REPETITION WITHIN THIS PART.
 
-            public bool Initialize()
-            {
-                Debug.LogError("Could not initialize HoloLens 2 Eye Tracker.");
-                return false;
-            }
+        public bool Initialize()
+        {
+            Debug.LogError("Could not initialize HoloLens 2 Eye Tracker.");
+            return false;
+        }
 
-            public GazeErrorData GetGazeData() { return null; }
+        public GazeErrorData GetGazeData() { return null; }
 
-            public Transform GetOriginTransform() { return null; }
+        public Transform GetOriginTransform() { return null; }
 
-            public void Destroy() { }
-        #endif
+        public void Destroy() { }
+#endif
     }
 }
