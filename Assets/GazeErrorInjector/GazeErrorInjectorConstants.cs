@@ -10,7 +10,8 @@ namespace GazeErrorInjector
         TobiiXr,
         PupilLabs,
         Varjo,
-        HoloLens2
+        HoloLens2,
+        QuestPro
     }
 
     public static class GazeErrorInjectorConstants
@@ -20,12 +21,14 @@ namespace GazeErrorInjector
         public const string PupilCompilerFlag = "PUPIL_SDK";
         public const string VarjoCompilerFlag = "VARJO_SDK";
         public const string HololensCompilerFlag = "HOLOLENS_SDK";
+        public const string QuestProCompilerFlag = "QUESTPRO_SDK";
 
         public const string SranipalName = "GazeErrorInjector.SrAnipalEyeTracker";
         public const string TobiiXrName = "GazeErrorInjector.TobiiProEyeTracker";
         public const string PupilName = "GazeErrorInjector.PupilEyeTracker";
         public const string VarjoName = "GazeErrorInjector.VarjoEyeTracker";
         public const string HoloLensName = "GazeErrorInjector.HoloLensEyeTracker";
+        public const string QuestProName = "GazeErrorInjector.QuestProEyeTracker";
 
         public static string GetEyeTrackerCompilerFlag(EyeTrackerList eyeTracker)
         {
@@ -41,6 +44,8 @@ namespace GazeErrorInjector
                     return VarjoCompilerFlag;
                 case EyeTrackerList.HoloLens2:
                     return HololensCompilerFlag;
+                case EyeTrackerList.QuestPro:
+                    return QuestProCompilerFlag;
                 default:
                     return null; 
             }
@@ -60,6 +65,8 @@ namespace GazeErrorInjector
                     return VarjoCompilerFlag;
                 case EyeTrackerList.HoloLens2:
                     return HoloLensName;
+                case EyeTrackerList.QuestPro:
+                    return QuestProName;
                 default:
                     return null; 
             }
