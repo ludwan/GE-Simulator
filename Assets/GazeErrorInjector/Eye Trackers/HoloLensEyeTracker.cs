@@ -24,13 +24,13 @@ namespace GazeErrorInjector
 #if HOLOLENS_SDK
         private IMixedRealityEyeGazeProvider _eyeGazeProvider;
 
-            public bool Initialize()
+            public override bool Initialize()
             {
                 _eyeGazeProvider = CoreServices.InputSystem.EyeGazeProvider;
                 return _eyeGazeProvider.IsEyeTrackingEnabled;
             }
 
-            public GazeErrorData GetGazeData()
+            public override GazeErrorData GetGazeData()
             {
                 if (_eyeGazeProvider.IsEyeTrackingEnabledAndValid == false)
                     return null;
@@ -38,8 +38,8 @@ namespace GazeErrorInjector
                 GazeErrorData gazeErrorData = new GazeErrorData();
 
                 gazeErrorData.Gaze.Timestamp = Time.unscaledTime;
-                gazeErrorData.Gaze.GazeOrigin = _eyeGazeProvider.GazeOrigin;
-                gazeErrorData.Gaze.GazeDirection = _eyeGazeProvider.GazeDirection;
+                gazeErrorData.Gaze.Origin = _eyeGazeProvider.GazeOrigin;
+                gazeErrorData.Gaze.Direction = _eyeGazeProvider.GazeDirection;
                 gazeErrorData.Gaze.isDataValid = _eyeGazeProvider.IsEyeTrackingEnabledAndValid;
 
                 _latestdata = gazeErrorData;
@@ -47,12 +47,12 @@ namespace GazeErrorInjector
                 return gazeErrorData;
             }
 
-            public void GetOrigin()
+            public override void GetOrigin()
             {
                 throw new System.NotImplementedException();
             }
 
-            public Transform GetOriginTransform() 
+            public override Transform GetOriginTransform() 
             { 
                 return Camera.main.transform;
             }
@@ -68,11 +68,6 @@ namespace GazeErrorInjector
             return false;
         }
 
-        public GazeErrorData GetGazeData() { return null; }
-
-        public Transform GetOriginTransform() { return null; }
-
-        public void Destroy() { }
 #endif
     }
 }

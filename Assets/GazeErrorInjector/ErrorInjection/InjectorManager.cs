@@ -151,25 +151,25 @@ namespace GazeErrorInjector
             data.RightEye = AddErrorData(data.RightEye, rightEyeSettings);
             // Cyclopean Eye
 
-            if(!data.LeftEye.GazeErrorDataLoss && !data.RightEye.GazeErrorDataLoss)
+            if(!data.LeftEye.ErrorDataLoss && !data.RightEye.ErrorDataLoss)
             {
-                data.Gaze.GazeErrorDirection = (data.LeftEye.GazeErrorDirection + data.RightEye.GazeErrorDirection) / 2f;
-                data.Gaze.GazeErrorDataLoss = false;
+                data.Gaze.ErrorDirection = (data.LeftEye.ErrorDirection + data.RightEye.ErrorDirection) / 2f;
+                data.Gaze.ErrorDataLoss = false;
             }
-            else if (!data.LeftEye.GazeErrorDataLoss && data.LeftEye.GazeErrorDataLoss)
+            else if (!data.LeftEye.ErrorDataLoss && data.LeftEye.ErrorDataLoss)
             {
-                data.Gaze.GazeErrorDirection = data.LeftEye.GazeErrorDirection;
-                data.Gaze.GazeErrorDataLoss = false;
+                data.Gaze.ErrorDirection = data.LeftEye.ErrorDirection;
+                data.Gaze.ErrorDataLoss = false;
             }
-            else if (data.LeftEye.GazeErrorDataLoss && !data.LeftEye.GazeErrorDataLoss)
+            else if (data.LeftEye.ErrorDataLoss && !data.LeftEye.ErrorDataLoss)
             {
-                data.Gaze.GazeErrorDirection = data.RightEye.GazeErrorDirection;
-                data.Gaze.GazeErrorDataLoss = false;
+                data.Gaze.ErrorDirection = data.RightEye.ErrorDirection;
+                data.Gaze.ErrorDataLoss = false;
             }
-            else if (data.LeftEye.GazeErrorDataLoss && data.LeftEye.GazeErrorDataLoss)
+            else if (data.LeftEye.ErrorDataLoss && data.LeftEye.ErrorDataLoss)
             {
-                data.Gaze.GazeErrorDirection = Vector3.zero;
-                data.Gaze.GazeErrorDataLoss = true;
+                data.Gaze.ErrorDirection = Vector3.zero;
+                data.Gaze.ErrorDataLoss = true;
             }
             return data;
         }
@@ -191,22 +191,22 @@ namespace GazeErrorInjector
 
         private EyeErrorData AddErrorData(EyeErrorData data, GazeErrorSettings settings)
         {
-            data.AccuracyErrorAmplitude = settings.gazeAccuracyError;
+            data.AccuracyError = settings.gazeAccuracyError;
             data.AccuracyErrorDirection = settings.gazeAccuracyErrorDirection;
             data.PrecisionError = settings.precisionError;
             data.PrecisionMode = settings.precisionErrorMode;
             data.DataLossProbability = settings.dataLossProbability;
 
-            Vector3 errorDirection = AddError(data.GazeDirection, settings);
-            data.GazeErrorDirection = errorDirection;
+            Vector3 errorDirection = AddError(data.Direction, settings);
+            data.ErrorDirection = errorDirection;
 
             if(errorDirection == Vector3.zero)
             {
-                data.GazeErrorDataLoss = true;
+                data.ErrorDataLoss = true;
             }
             else
             {
-                data.GazeErrorDataLoss = false;
+                data.ErrorDataLoss = false;
             }
             return data;
         }

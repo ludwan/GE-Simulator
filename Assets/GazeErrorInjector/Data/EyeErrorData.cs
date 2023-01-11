@@ -7,10 +7,10 @@ namespace GazeErrorInjector
 {
     public class EyeErrorData : EyeData
     {
-        public Vector3 GazeErrorDirection;
-        public bool GazeErrorDataLoss;
+        public Vector3 ErrorDirection;
+        public bool ErrorDataLoss;
         public float AccuracyErrorDirection;
-        public float AccuracyErrorAmplitude;
+        public float AccuracyError;
         public PrecisionErrorMode PrecisionMode;
         public float PrecisionError;
         public float DataLossProbability;
@@ -20,11 +20,11 @@ namespace GazeErrorInjector
         public EyeErrorData (EyeData data) 
         {
             this.Timestamp = data.Timestamp;
-            GazeOrigin = data.GazeOrigin;
-            GazeDirection = data.GazeDirection;
+            Origin = data.Origin;
+            Direction = data.Direction;
             isDataValid = data.isDataValid;
 
-            GazeErrorDirection = GazeDirection;
+            ErrorDirection = Direction;
         }
     }
 }

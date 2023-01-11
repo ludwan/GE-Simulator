@@ -16,7 +16,7 @@ namespace GazeErrorInjector
 #if QUESTPRO_SDK
         private OVREyeGaze[] eyes;
 
-        public bool Initialize()
+        public override bool Initialize()
         {
             eyes = FindObjectsOfType<OVREyeGaze>().OrderBy(eye => eye.Eye).ToArray();
             if (eyes.Length < 2)
@@ -25,18 +25,18 @@ namespace GazeErrorInjector
             return true;
         }
 
-        public GazeErrorData GetGazeData()
+        public override GazeErrorData GetGazeData()
         {
             GazeErrorData gazeErrorData = new GazeErrorData();
 
             gazeErrorData.LeftEye.Timestamp = Time.unscaledTime;
-            gazeErrorData.LeftEye.GazeOrigin = eyes[0].transform.position;
-            gazeErrorData.LeftEye.GazeDirection = eyes[0].transform.forward;
+            gazeErrorData.LeftEye.Origin = eyes[0].transform.position;
+            gazeErrorData.LeftEye.Direction = eyes[0].transform.forward;
             gazeErrorData.LeftEye.isDataValid = eyes[0].EyeTrackingEnabled;
 
             gazeErrorData.RightEye.Timestamp = Time.unscaledTime;
-            gazeErrorData.RightEye.GazeOrigin = eyes[1].transform.position;
-            gazeErrorData.RightEye.GazeDirection = eyes[1].transform.forward;
+            gazeErrorData.RightEye.Origin = eyes[1].transform.position;
+            gazeErrorData.RightEye.Direction = eyes[1].transform.forward;
             gazeErrorData.RightEye.isDataValid = eyes[1].EyeTrackingEnabled;
 
             Vector3 centerEyePos = Vector3.zero;
@@ -46,8 +46,8 @@ namespace GazeErrorInjector
             Quaternion centerEyeRot = Quaternion.Lerp(eyes[0].transform.rotation, eyes[1].transform.rotation, 0.5f);
 
             gazeErrorData.Gaze.Timestamp = Time.unscaledTime;
-            gazeErrorData.Gaze.GazeOrigin = centerEyePos;
-            gazeErrorData.Gaze.GazeDirection = centerEyeRot * Vector3.forward;
+            gazeErrorData.Gaze.Origin = centerEyePos;
+            gazeErrorData.Gaze.Direction = centerEyeRot * Vector3.forward;
             gazeErrorData.Gaze.isDataValid = eyes[0].EyeTrackingEnabled && eyes[1].EyeTrackingEnabled;
 
             _latestdata = gazeErrorData;
@@ -60,12 +60,12 @@ namespace GazeErrorInjector
             throw new System.NotImplementedException();
         }
 
-        public Transform GetOriginTransform()
+        public override Transform GetOriginTransform()
         {
             return Camera.main.transform;
         }
 
-        public void Destroy() { }
+        public override void Destroy() { }
 
 #else
         //TODO A LOT OF CODE REPETITION WITHIN THIS PART.

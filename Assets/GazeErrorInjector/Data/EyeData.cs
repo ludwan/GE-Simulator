@@ -7,8 +7,8 @@ namespace GazeErrorInjector
     public class EyeData
     {
         public float Timestamp;
-        public Vector3 GazeOrigin;
-        public Vector3 GazeDirection;
+        public Vector3 Origin;
+        public Vector3 Direction;
         public bool isDataValid;
 
         public EyeData() { }
@@ -16,8 +16,8 @@ namespace GazeErrorInjector
         public EyeData(float timestamp, Vector3 origin, Vector3 direction, bool isValid) 
         {
             Timestamp = timestamp;
-            GazeOrigin = origin;
-            GazeDirection = direction;
+            Origin = origin;
+            Direction = direction;
             isDataValid = isValid;
         }
     }

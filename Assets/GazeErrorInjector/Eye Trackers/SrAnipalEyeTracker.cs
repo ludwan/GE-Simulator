@@ -33,15 +33,15 @@ namespace GazeErrorInjector
                 GazeErrorData newData = new GazeErrorData();                
                 //Gaze
                 newData.Gaze.Timestamp = Time.unscaledTime;
-                newData.Gaze.isDataValid = SRanipal_Eye.GetGazeRay(GazeIndex.COMBINE, out newData.Gaze.GazeOrigin, out newData.Gaze.GazeDirection);
+                newData.Gaze.isDataValid = SRanipal_Eye.GetGazeRay(GazeIndex.COMBINE, out newData.Gaze.Origin, out newData.Gaze.Direction);
 
                 //Left Eye
                 newData.LeftEye.Timestamp = Time.unscaledTime;
-                newData.LeftEye.isDataValid = SRanipal_Eye.GetGazeRay(GazeIndex.LEFT, out newData.LeftEye.GazeOrigin, out newData.LeftEye.GazeDirection);
+                newData.LeftEye.isDataValid = SRanipal_Eye.GetGazeRay(GazeIndex.LEFT, out newData.LeftEye.Origin, out newData.LeftEye.Direction);
 
                 //Right Eye
                 newData.RightEye.Timestamp = Time.unscaledTime;
-                newData.RightEye.isDataValid = SRanipal_Eye.GetGazeRay(GazeIndex.RIGHT, out newData.RightEye.GazeOrigin, out newData.RightEye.GazeDirection);
+                newData.RightEye.isDataValid = SRanipal_Eye.GetGazeRay(GazeIndex.RIGHT, out newData.RightEye.Origin, out newData.RightEye.Direction);
 
                 return newData;
             }
