@@ -9,17 +9,9 @@ using Microsoft.MixedReality.Toolkit.Input;
 
 namespace GazeErrorInjector
 {
-    public class HoloLensEyeTracker : MonoBehaviour, IEyeTracker
+    public class HoloLensEyeTracker : EyeTracker
     {
 
-        private GazeErrorData _latestdata = new GazeErrorData();
-        public GazeErrorData LatestData
-        {
-            get
-            {
-                return _latestdata;
-            }
-        }
 
 #if HOLOLENS_SDK
         private IMixedRealityEyeGazeProvider _eyeGazeProvider;
@@ -62,7 +54,7 @@ namespace GazeErrorInjector
 #else
         //TODO A LOT OF CODE REPETITION WITHIN THIS PART.
 
-        public bool Initialize()
+        public override bool Initialize()
         {
             Debug.LogError("Could not initialize HoloLens 2 Eye Tracker.");
             return false;
