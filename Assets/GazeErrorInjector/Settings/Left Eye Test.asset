@@ -1,0 +1,19 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c32c391e1b5ba544ba3a412f9307f704, type: 3}
+  m_Name: Left Eye Test
+  m_EditorClassIdentifier: 
+  gazeAccuracyErrorDirection: 71
+  gazeAccuracyError: 2.37
+  precisionErrorMode: 0
+  precisionError: 1.98
+  dataLossProbability: 0.1

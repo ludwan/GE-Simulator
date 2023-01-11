@@ -26,10 +26,27 @@ namespace GazeErrorInjector
         {
             serializedObject.Update ();
 
-            EditorGUILayout.PropertyField(sdkProp);
+            if(Application.isPlaying)
+            {
+                GUI.enabled = false;
+                EditorGUILayout.PropertyField(sdkProp);
+                GUI.enabled = true;
+            }
+            else
+            {
+                EditorGUILayout.PropertyField(sdkProp);
+                EyeTrackerList sdk = (EyeTrackerList) sdkProp.enumValueIndex;
+                string compilerFlag = GazeErrorInjectorConstants.GetEyeTrackerCompilerFlag(sdk);
+                PlayerSettings.SetScriptingDefineSymbolsForGroup(BuildTargetGroup.Standalone, compilerFlag);
+            }
+            
             EditorGUILayout.PropertyField(toggleProp);
             EditorGUILayout.PropertyField(activeProp);
             EditorGUILayout.PropertyField(modeProp);
+
+
+            
+
             ErrorMode mode = (ErrorMode) modeProp.enumValueIndex;
 
             serializedObject.ApplyModifiedProperties ();

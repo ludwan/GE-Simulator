@@ -24,6 +24,7 @@ namespace GazeErrorInjector
         public bool isActive = true;
         public KeyCode toggleKey = KeyCode.None;
         public EyeTrackerList EyeTrackerSDK;
+
         public ErrorMode gazeMode;
 
         public GazeErrorSettings gazeSettings;
@@ -65,8 +66,9 @@ namespace GazeErrorInjector
 
         
         // Start is called before the first frame update
-        void Start()
+        void OnEnable()
         {
+            Debug.Log("Enabling");
             InitEyeTracker();
             if(_eyeTracker != null)
             {
@@ -246,10 +248,10 @@ namespace GazeErrorInjector
 
             UpdateEyeTracker();
 
-            if (_compilerFlagString != null)
-            {
-                PlayerSettings.SetScriptingDefineSymbolsForGroup(BuildTargetGroup.Standalone, _compilerFlagString);
-            }
+            // if (_compilerFlagString != null)
+            // {
+            //     PlayerSettings.SetScriptingDefineSymbolsForGroup(BuildTargetGroup.Standalone, _compilerFlagString);
+            // }
 
             _eyeTracker = GetEyeTracker();
             if(_eyeTracker != null)
@@ -279,6 +281,8 @@ namespace GazeErrorInjector
             } 
             try
             {
+                print($"Name: {eyeTrackerName}");
+                print(PlayerSettings.GetScriptingDefineSymbolsForGroup(BuildTargetGroup.Standalone));
                 return Activator.CreateInstance(eyeTrackerType) as EyeTracker;
             }
             catch (Exception) 

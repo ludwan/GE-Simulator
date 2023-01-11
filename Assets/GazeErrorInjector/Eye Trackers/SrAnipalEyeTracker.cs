@@ -4,6 +4,8 @@ using UnityEngine;
 
 #if VIVE_SDK
 
+using ViveSR.anipal.Eye;
+
 #endif
 
 namespace GazeErrorInjector
@@ -12,9 +14,11 @@ namespace GazeErrorInjector
     {
 
         #if VIVE_SDK
+            private static ViveSR.anipal.Eye.EyeData eyeData = new ViveSR.anipal.Eye.EyeData();
+            private static bool eye_callback_registered = false;
+
             public override bool Initialize()
             {
-                //TODO: ADD GAMOBJECT.
                 if (!SRanipal_Eye_API.IsViveProEye()) return false;
 
                 return (SRanipal_Eye_Framework.Status == SRanipal_Eye_Framework.FrameworkStatus.WORKING);                
@@ -23,12 +27,23 @@ namespace GazeErrorInjector
             public override GazeErrorData GetGazeData()
             {
                 if (SRanipal_Eye_Framework.Status != SRanipal_Eye_Framework.FrameworkStatus.WORKING &&
-                            SRanipal_Eye_Framework.Status != SRanipal_Eye_Framework.FrameworkStatus.NOT_SUPPORT) return;
-                
-                _localEyeGazeData.Timestamp = Time.unscaledTime;
-                _localEyeGazeData.isRayValid = SRanipal_Eye.GetGazeRay(GazeIndex.COMBINE, out _localEyeGazeData.Origin, out _localEyeGazeData.Direction);
+                            SRanipal_Eye_Framework.Status != SRanipal_Eye_Framework.FrameworkStatus.NOT_SUPPORT) return null;
 
-                return null;
+                
+                GazeErrorData newData = new GazeErrorData();                
+                //Gaze
+                newData.Gaze.Timestamp = Time.unscaledTime;
+                newData.Gaze.isDataValid = SRanipal_Eye.GetGazeRay(GazeIndex.COMBINE, out newData.Gaze.GazeOrigin, out newData.Gaze.GazeDirection);
+
+                //Left Eye
+                newData.LeftEye.Timestamp = Time.unscaledTime;
+                newData.LeftEye.isDataValid = SRanipal_Eye.GetGazeRay(GazeIndex.LEFT, out newData.LeftEye.GazeOrigin, out newData.LeftEye.GazeDirection);
+
+                //Right Eye
+                newData.RightEye.Timestamp = Time.unscaledTime;
+                newData.RightEye.isDataValid = SRanipal_Eye.GetGazeRay(GazeIndex.RIGHT, out newData.RightEye.GazeOrigin, out newData.RightEye.GazeDirection);
+
+                return newData;
             }
 
             public override Transform GetOriginTransform() 

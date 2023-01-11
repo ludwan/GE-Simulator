@@ -8,7 +8,7 @@ namespace GazeErrorInjector
     {
         HTCViveSranipal,
         TobiiXr,
-        PupiLabs,
+        PupilLabs,
         Varjo,
         HoloLens2
     }
@@ -21,11 +21,11 @@ namespace GazeErrorInjector
         public const string VarjoCompilerFlag = "VARJO_SDK";
         public const string HololensCompilerFlag = "HOLOLENS_SDK";
 
-        public const string SranipalName = "GazeMetrics.SrAnipalEyeTracker";
-        public const string TobiiXrName = "GazeMetrics.TobiiProEyeTracker";
-        public const string PupilName = "GazeMetrics.PupilEyeTracker";
-        public const string VarjoName = "GazeMetrics.VarjoEyeTracker";
-        public const string HoloLensName = "GazeMetrics.HoloLensEyeTracker";
+        public const string SranipalName = "GazeErrorInjector.SrAnipalEyeTracker";
+        public const string TobiiXrName = "GazeErrorInjector.TobiiProEyeTracker";
+        public const string PupilName = "GazeErrorInjector.PupilEyeTracker";
+        public const string VarjoName = "GazeErrorInjector.VarjoEyeTracker";
+        public const string HoloLensName = "GazeErrorInjector.HoloLensEyeTracker";
 
         public static string GetEyeTrackerCompilerFlag(EyeTrackerList eyeTracker)
         {
@@ -33,7 +33,7 @@ namespace GazeErrorInjector
             {
                 case EyeTrackerList.HTCViveSranipal:
                     return SranipalCompilerFlag;
-                case EyeTrackerList.PupiLabs:
+                case EyeTrackerList.PupilLabs:
                     return PupilCompilerFlag;
                 case EyeTrackerList.TobiiXr:
                     return TobiiXrCompilerFlag;
@@ -52,7 +52,7 @@ namespace GazeErrorInjector
             {
                 case EyeTrackerList.HTCViveSranipal:
                     return SranipalName;
-                case EyeTrackerList.PupiLabs:
+                case EyeTrackerList.PupilLabs:
                     return PupilName;
                 case EyeTrackerList.TobiiXr:
                     return TobiiXrName;

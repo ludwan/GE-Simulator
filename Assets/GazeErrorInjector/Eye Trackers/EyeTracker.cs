@@ -4,13 +4,13 @@ using UnityEngine;
 
 namespace GazeErrorInjector
 {
-    public abstract class EyeTracker : MonoBehaviour, IEyeTracker 
+    public abstract class EyeTracker : IEyeTracker//MonoBehaviour, IEyeTracker 
     {
         public delegate void NewGazeData(GazeErrorData data);
         public event NewGazeData OnNewGazeData;
 
 
-        private GazeErrorData _latestdata = new GazeErrorData();
+        protected GazeErrorData _latestdata = new GazeErrorData();
         public GazeErrorData LatestData 
         {
             get
@@ -45,7 +45,7 @@ namespace GazeErrorInjector
 
         public virtual void Destroy()
         {
-           Destroy(this);
+           //Destroy(this);
         }
     }
 }
