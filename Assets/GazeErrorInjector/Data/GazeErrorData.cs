@@ -14,7 +14,12 @@ namespace GazeErrorInjector
 
         public EyeErrorData LeftEye;
 
-        public GazeErrorData() { }
+        public GazeErrorData() 
+        {
+            Gaze = new EyeErrorData();
+            RightEye = new EyeErrorData();
+            LeftEye = new EyeErrorData();
+        }
 
         public GazeErrorData (ErrorMode mode, EyeData gaze, EyeData leftEye, EyeData rightEye) 
         {

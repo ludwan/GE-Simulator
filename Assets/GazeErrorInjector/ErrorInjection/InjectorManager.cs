@@ -281,9 +281,7 @@ namespace GazeErrorInjector
             } 
             try
             {
-                print($"Name: {eyeTrackerName}");
-                print(PlayerSettings.GetScriptingDefineSymbolsForGroup(BuildTargetGroup.Standalone));
-                return Activator.CreateInstance(eyeTrackerType) as EyeTracker;
+                return this.gameObject.AddComponent(eyeTrackerType) as EyeTracker;
             }
             catch (Exception) 
             {

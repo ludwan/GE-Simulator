@@ -12,8 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c32c391e1b5ba544ba3a412f9307f704, type: 3}
   m_Name: Left Eye Test
   m_EditorClassIdentifier: 
-  gazeAccuracyErrorDirection: 71
-  gazeAccuracyError: 2.37
+  gazeAccuracyErrorDirection: 0
+  gazeAccuracyError: 0
   precisionErrorMode: 0
-  precisionError: 1.98
-  dataLossProbability: 0.1
+  precisionError: 0
+  dataLossProbability: 0
