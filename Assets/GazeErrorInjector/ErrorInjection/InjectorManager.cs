@@ -23,20 +23,12 @@ namespace GazeErrorInjector
     {
         public bool isActive = true;
         public KeyCode toggleKey = KeyCode.None;
-
         public EyeTrackerList EyeTrackerSDK;
         public ErrorMode gazeMode;
-        [Header("Gaze")]
+
         public GazeErrorSettings gazeSettings;
-        private InjectorContainer _gazeInjectors;
-
-        [Header("Right Eye")]
-        public GazeErrorSettings rightEyeSettings;
-        private InjectorContainer _rightEyeInjectors;
-
-        [Header("Left Eye")]
         public GazeErrorSettings leftEyeSettings;
-        private InjectorContainer _leftEyeInjectors;
+        public GazeErrorSettings rightEyeSettings;
 
         private Dictionary<GazeErrorSettings, InjectorContainer> injectors = new Dictionary<GazeErrorSettings, InjectorContainer>();
         private string _compilerFlagString;
@@ -75,9 +67,18 @@ namespace GazeErrorInjector
         // Start is called before the first frame update
         void Start()
         {
-            injectors.Add(gazeSettings, AddComponents("Gaze", gazeSettings));
-            injectors.Add(rightEyeSettings, AddComponents("Right Eye", rightEyeSettings));
-            injectors.Add(leftEyeSettings, AddComponents("Left Eye", leftEyeSettings));
+            InitEyeTracker();
+            if(_eyeTracker != null)
+            {
+                SubscribeToGaze();
+                injectors.Add(gazeSettings, AddComponents("Gaze", gazeSettings));
+                injectors.Add(rightEyeSettings, AddComponents("Right Eye", rightEyeSettings));
+                injectors.Add(leftEyeSettings, AddComponents("Left Eye", leftEyeSettings));
+            }
+            else
+            {
+                isActive = false;
+            }
         }
 
         // Update is called once per frame
@@ -90,6 +91,14 @@ namespace GazeErrorInjector
             }
 
             if(!isActive) return;
+        }
+
+        void OnApplicationQuit() 
+        {
+            if(_eyeTracker != null)
+            {
+                UnsubscribeToGaze();
+            }
         }
 
         public void ToggleErrors()
@@ -110,10 +119,13 @@ namespace GazeErrorInjector
             switch (gazeMode)
             {
                 case ErrorMode.None:
+                    AddNoError(data);
                     break;
                 case ErrorMode.Dependent:
+                    AddDependentError(data);
                     break;
                 case ErrorMode.Independent:
+                    data = AddIndependentError(data);
                     break;
                 default:
                     break;
@@ -122,32 +134,98 @@ namespace GazeErrorInjector
         }
 
 
-        private void AddNoError(GazeErrorData data)
+        private GazeErrorData AddNoError(GazeErrorData data)
         {
-
+            data.Mode = ErrorMode.None;
+            return data;
         }
 
-        private void AddDependentError(GazeErrorData data)
+        private GazeErrorData AddDependentError(GazeErrorData data)
         {
+            data.Mode = ErrorMode.Dependent;
             //Left Eye
+            data.LeftEye = AddErrorData(data.LeftEye, leftEyeSettings);
+            // Right Eye
+            data.RightEye = AddErrorData(data.RightEye, rightEyeSettings);
+            // Cyclopean Eye
+
+            if(!data.LeftEye.GazeErrorDataLoss && !data.RightEye.GazeErrorDataLoss)
+            {
+                data.Gaze.GazeErrorDirection = (data.LeftEye.GazeErrorDirection + data.RightEye.GazeErrorDirection) / 2f;
+                data.Gaze.GazeErrorDataLoss = false;
+            }
+            else if (!data.LeftEye.GazeErrorDataLoss && data.LeftEye.GazeErrorDataLoss)
+            {
+                data.Gaze.GazeErrorDirection = data.LeftEye.GazeErrorDirection;
+                data.Gaze.GazeErrorDataLoss = false;
+            }
+            else if (data.LeftEye.GazeErrorDataLoss && !data.LeftEye.GazeErrorDataLoss)
+            {
+                data.Gaze.GazeErrorDirection = data.RightEye.GazeErrorDirection;
+                data.Gaze.GazeErrorDataLoss = false;
+            }
+            else if (data.LeftEye.GazeErrorDataLoss && data.LeftEye.GazeErrorDataLoss)
+            {
+                data.Gaze.GazeErrorDirection = Vector3.zero;
+                data.Gaze.GazeErrorDataLoss = true;
+            }
+            return data;
+        }
+
+        private GazeErrorData AddIndependentError(GazeErrorData data)
+        {
+            data.Mode = ErrorMode.Independent;
+            //Left Eye
+            data.LeftEye = AddErrorData(data.LeftEye, leftEyeSettings);
             
             // Right Eye
+            data.RightEye = AddErrorData(data.RightEye, rightEyeSettings);
 
             // Cyclopean Eye
+            data.Gaze = AddErrorData(data.Gaze, gazeSettings);
+
+            return data;
         }
 
-        private void AddIndependentError(GazeErrorData data)
+        private EyeErrorData AddErrorData(EyeErrorData data, GazeErrorSettings settings)
         {
-            //Left Eye
-            
-            // Right Eye
+            data.AccuracyErrorAmplitude = settings.gazeAccuracyError;
+            data.AccuracyErrorDirection = settings.gazeAccuracyErrorDirection;
+            data.PrecisionError = settings.precisionError;
+            data.PrecisionMode = settings.precisionErrorMode;
+            data.DataLossProbability = settings.dataLossProbability;
 
-            // Cyclopean Eye
+            Vector3 errorDirection = AddError(data.GazeDirection, settings);
+            data.GazeErrorDirection = errorDirection;
+
+            if(errorDirection == Vector3.zero)
+            {
+                data.GazeErrorDataLoss = true;
+            }
+            else
+            {
+                data.GazeErrorDataLoss = false;
+            }
+            return data;
         }
 
-        private void AddError()
+        private Vector3 AddError(Vector3 dir, GazeErrorSettings settings)
         {
-            
+            InjectorContainer container = injectors[settings];
+
+            dir = container.accuracy.Inject(dir);
+            switch(settings.precisionErrorMode)
+            {
+                case PrecisionErrorMode.Uniform:
+                    dir = container.uniform.Inject(dir);
+                    break;
+                case PrecisionErrorMode.Gaussian:
+                    dir = container.uniform.Inject(dir);
+                    break;
+            }
+
+            dir = container.dataLoss.Inject(dir);
+            return dir;
         }
 
         private void SubscribeToGaze()
@@ -174,7 +252,10 @@ namespace GazeErrorInjector
             }
 
             _eyeTracker = GetEyeTracker();
-            _eyeTracker.Initialize();
+            if(_eyeTracker != null)
+            {
+                _eyeTracker.Initialize();
+            }   
         }
 
         private void UpdateEyeTracker()
@@ -226,11 +307,21 @@ namespace GazeErrorInjector
         {
             InjectorContainer container = new InjectorContainer();
 
-            GameObject go = new GameObject(name);//, typeof(AccuracyInjector), typeof(GaussianPrecisionInjector), typeof(UniformPrecisionInjector), typeof(DataLossInjector));
+            GameObject go = new GameObject(name);
             container.accuracy = go.AddComponent<AccuracyInjector>();
             container.gaussian = go.AddComponent<GaussianPrecisionInjector>();
             container.uniform = go.AddComponent<UniformPrecisionInjector>();
             container.dataLoss = go.AddComponent<DataLossInjector>();
+
+            container.accuracy.Manager = this;
+            container.gaussian.Manager = this;
+            container.uniform.Manager = this;
+            container.dataLoss.Manager = this;
+
+            container.accuracy.Init();
+            container.gaussian.Init();
+            container.uniform.Init();
+            container.dataLoss.Init();
 
             go.transform.parent = this.transform;
             container.obj = go;

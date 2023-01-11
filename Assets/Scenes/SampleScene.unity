@@ -1125,9 +1125,6 @@ GameObject:
   m_Component:
   - component: {fileID: 1661759338}
   - component: {fileID: 1661759342}
-  - component: {fileID: 1661759340}
-  - component: {fileID: 1661759339}
-  - component: {fileID: 1661759343}
   m_Layer: 0
   m_Name: OffsetTest
   m_TagString: Untagged
@@ -1149,36 +1146,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1661759339
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1661759337}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 30a74742fb2dd6b42bf8212903d2be5f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _hmd: {fileID: 1592397364}
-  Manager: {fileID: 0}
-  AccuracyDirection: 45
-  AccuracyAmplitude: 4.7
---- !u!114 &1661759340
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1661759337}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a4fb2355a1dae37489fb3d15acf77210, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  injector: {fileID: 1661759339}
-  precInjector: {fileID: 1661759343}
 --- !u!114 &1661759342
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1191,28 +1158,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fa177282952cd0a4b8fdb188a7a53c19, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isActive: 1
+  isActive: 0
   toggleKey: 0
   EyeTrackerSDK: 0
-  gazeMode: 0
-  cyclopeanSettings: {fileID: 11400000, guid: f53a7df8c29dc6c4a8538d083735df83, type: 2}
-  rightEyeSettings: {fileID: 0}
+  gazeMode: 1
+  gazeSettings: {fileID: 0}
   leftEyeSettings: {fileID: 0}
---- !u!114 &1661759343
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1661759337}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 51281ccf0538b0a4c90242476ec4fd2c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _hmd: {fileID: 0}
-  Manager: {fileID: 0}
-  error: 0
+  rightEyeSettings: {fileID: 0}
 --- !u!1 &1721405305
 GameObject:
   m_ObjectHideFlags: 0

@@ -8,8 +8,10 @@ namespace GazeErrorInjector
     public class EyeErrorData : EyeData
     {
         public Vector3 GazeErrorDirection;
+        public bool GazeErrorDataLoss;
         public float AccuracyErrorDirection;
         public float AccuracyErrorAmplitude;
+        public PrecisionErrorMode PrecisionMode;
         public float PrecisionError;
         public float DataLossProbability;
 
