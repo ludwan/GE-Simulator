@@ -8,16 +8,8 @@ using UnityEngine;
 
 namespace GazeErrorInjector
 {
-    public class TobiiProEyeTracker : MonoBehaviour, IEyeTracker
+    public class TobiiProEyeTracker : EyeTracker
     {
-        private GazeErrorData _latestdata = new GazeErrorData();
-        public GazeErrorData LatestData 
-        {
-            get
-            {
-                return _latestdata;
-            }
-        }
 
         #if TOBII_SDK
             public bool Initialize()
@@ -40,17 +32,12 @@ namespace GazeErrorInjector
                 throw new System.NotImplementedException();
             }
         #else
-            public bool Initialize()
+            public override bool Initialize()
             {
                 Debug.LogError("Could not initialize TobiiXR Eye Tracker.");
                 return false;
             }
 
-            public GazeErrorData GetGazeData() { return null; }
-
-            public Transform GetOriginTransform() { return null; }
-
-            public void Destroy() { }
         #endif
     }
 }

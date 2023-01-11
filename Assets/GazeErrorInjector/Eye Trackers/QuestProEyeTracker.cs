@@ -9,17 +9,9 @@ using UnityEngine;
 
 namespace GazeErrorInjector
 {
-    public class QuestProEyeTracker : MonoBehaviour, IEyeTracker
+    public class QuestProEyeTracker : EyeTracker
     {
 
-        private GazeErrorData _latestdata = new GazeErrorData();
-        public GazeErrorData LatestData
-        {
-            get
-            {
-                return _latestdata;
-            }
-        }
 
 #if QUESTPRO_SDK
         private OVREyeGaze[] eyes;
@@ -77,17 +69,12 @@ namespace GazeErrorInjector
 
 #else
         //TODO A LOT OF CODE REPETITION WITHIN THIS PART.
-        public bool Initialize()
+        public override bool Initialize()
         {
             Debug.LogError("Could not initialize HoloLens 2 Eye Tracker.");
             return false;
         }
 
-        public GazeErrorData GetGazeData() { return null; }
-
-        public Transform GetOriginTransform() { return null; }
-
-        public void Destroy() { }
 #endif
     }
 }
