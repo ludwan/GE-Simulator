@@ -1,5 +1,3 @@
-#define HOLOLENS_SDK
-
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
