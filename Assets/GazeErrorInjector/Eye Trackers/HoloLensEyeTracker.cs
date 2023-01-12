@@ -20,21 +20,29 @@ namespace GazeErrorInjector
                 return _eyeGazeProvider.IsEyeTrackingEnabled;
             }
 
+            void Update()
+            {
+                LatestData = GetGazeData();
+            }
+
             public override GazeErrorData GetGazeData()
             {
                 if (_eyeGazeProvider.IsEyeTrackingEnabledAndValid == false)
                     return null;
 
-                GazeErrorData gazeErrorData = new GazeErrorData();
+                GazeErrorData newData = new GazeErrorData();
 
-                gazeErrorData.Gaze.Timestamp = Time.unscaledTime;
-                gazeErrorData.Gaze.Origin = _eyeGazeProvider.GazeOrigin;
-                gazeErrorData.Gaze.Direction = _eyeGazeProvider.GazeDirection;
-                gazeErrorData.Gaze.isDataValid = _eyeGazeProvider.IsEyeTrackingEnabledAndValid;
+                // Gaze
+                newData.Gaze.Timestamp = Time.unscaledTime;
+                newData.Gaze.Origin = _eyeGazeProvider.GazeOrigin;
+                newData.Gaze.Direction = _eyeGazeProvider.GazeDirection;
+                newData.Gaze.isDataValid = _eyeGazeProvider.IsEyeTrackingEnabledAndValid;
 
-                LatestData = gazeErrorData;
+                // HoloLens 2 does not provide seperate data for left and right eye...
+                newData.LeftEye = newData.Gaze;
+                newData.RightEye = newData.Gaze;
 
-                return gazeErrorData;
+                return newData;
             }
 
             public override Transform GetOriginTransform() 
