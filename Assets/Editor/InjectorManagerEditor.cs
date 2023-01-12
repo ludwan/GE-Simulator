@@ -37,7 +37,8 @@ namespace GazeErrorInjector
                 EditorGUILayout.PropertyField(sdkProp);
                 EyeTrackerList sdk = (EyeTrackerList) sdkProp.enumValueIndex;
                 string compilerFlag = GazeErrorInjectorConstants.GetEyeTrackerCompilerFlag(sdk);
-                PlayerSettings.SetScriptingDefineSymbolsForGroup(BuildTargetGroup.Standalone, compilerFlag);
+                BuildTargetGroup buildTargetGroup = BuildPipeline.GetBuildTargetGroup(EditorUserBuildSettings.activeBuildTarget);
+                PlayerSettings.SetScriptingDefineSymbolsForGroup(buildTargetGroup, compilerFlag);
             }
             
             EditorGUILayout.PropertyField(toggleProp);
