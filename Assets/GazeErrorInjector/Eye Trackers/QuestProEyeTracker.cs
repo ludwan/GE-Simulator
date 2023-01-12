@@ -50,14 +50,9 @@ namespace GazeErrorInjector
             gazeErrorData.Gaze.Direction = centerEyeRot * Vector3.forward;
             gazeErrorData.Gaze.isDataValid = eyes[0].EyeTrackingEnabled && eyes[1].EyeTrackingEnabled;
 
-            _latestdata = gazeErrorData;
+            LatestData = gazeErrorData;
 
             return gazeErrorData;
-        }
-
-        public void GetOrigin()
-        {
-            throw new System.NotImplementedException();
         }
 
         public override Transform GetOriginTransform()
