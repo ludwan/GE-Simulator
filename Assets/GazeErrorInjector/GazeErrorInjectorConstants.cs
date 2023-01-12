@@ -62,7 +62,7 @@ namespace GazeErrorInjector
                 case EyeTrackerList.TobiiXr:
                     return TobiiXrName;
                 case EyeTrackerList.Varjo:
-                    return VarjoCompilerFlag;
+                    return VarjoName;
                 case EyeTrackerList.HoloLens2:
                     return HoloLensName;
                 case EyeTrackerList.QuestPro:
