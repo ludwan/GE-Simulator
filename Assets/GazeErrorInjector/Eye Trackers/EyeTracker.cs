@@ -20,7 +20,7 @@ namespace GazeErrorInjector
             protected set
             {
                 _latestdata = value;
-                if(OnNewGazeData != null)
+                if(OnNewGazeData != null && _latestdata != null)
                 {
                     OnNewGazeData(_latestdata);
                 }
