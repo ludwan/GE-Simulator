@@ -14,43 +14,53 @@ namespace GazeErrorInjector
 
 
 #if QUESTPRO_SDK
-        private OVREyeGaze[] eyes;
+        private OVREyeGaze leftEye;
+        private OVREyeGaze rightEye;
 
         public override bool Initialize()
         {
-            eyes = FindObjectsOfType<OVREyeGaze>().OrderBy(eye => eye.Eye).ToArray();
-            if (eyes.Length < 2)
+            var eyes = FindObjectsOfType<OVREyeGaze>();
+
+            if (eyes.Length != 2)
                 return false;
 
+            foreach (var eye in eyes)
+            {
+                if (eye.Eye == OVREyeGaze.EyeId.Left)
+                    leftEye = eye;
+                else if (eye.Eye == OVREyeGaze.EyeId.Right)
+                    rightEye = eye;
+            }
+
             return true;
+        }
+
+        void Update()
+        {
+            LatestData = GetGazeData();
         }
 
         public override GazeErrorData GetGazeData()
         {
             GazeErrorData gazeErrorData = new GazeErrorData();
 
+            // Left Eye
             gazeErrorData.LeftEye.Timestamp = Time.unscaledTime;
-            gazeErrorData.LeftEye.Origin = eyes[0].transform.position;
-            gazeErrorData.LeftEye.Direction = eyes[0].transform.forward;
-            gazeErrorData.LeftEye.isDataValid = eyes[0].EyeTrackingEnabled;
+            gazeErrorData.LeftEye.Origin = leftEye.transform.position;
+            gazeErrorData.LeftEye.Direction = leftEye.transform.forward;
+            gazeErrorData.LeftEye.isDataValid = leftEye.EyeTrackingEnabled;
 
+            // Right Eye
             gazeErrorData.RightEye.Timestamp = Time.unscaledTime;
-            gazeErrorData.RightEye.Origin = eyes[1].transform.position;
-            gazeErrorData.RightEye.Direction = eyes[1].transform.forward;
-            gazeErrorData.RightEye.isDataValid = eyes[1].EyeTrackingEnabled;
+            gazeErrorData.RightEye.Origin = rightEye.transform.position;
+            gazeErrorData.RightEye.Direction = rightEye.transform.forward;
+            gazeErrorData.RightEye.isDataValid = rightEye.EyeTrackingEnabled;
 
-            Vector3 centerEyePos = Vector3.zero;
-            foreach (var eye in eyes)
-                centerEyePos += eye.transform.position;
-            centerEyePos /= eyes.Length;
-            Quaternion centerEyeRot = Quaternion.Lerp(eyes[0].transform.rotation, eyes[1].transform.rotation, 0.5f);
-
+            // Gaze
             gazeErrorData.Gaze.Timestamp = Time.unscaledTime;
-            gazeErrorData.Gaze.Origin = centerEyePos;
-            gazeErrorData.Gaze.Direction = centerEyeRot * Vector3.forward;
-            gazeErrorData.Gaze.isDataValid = eyes[0].EyeTrackingEnabled && eyes[1].EyeTrackingEnabled;
-
-            LatestData = gazeErrorData;
+            gazeErrorData.Gaze.Origin = (leftEye.transform.position + rightEye.transform.position) / 2.0f;
+            gazeErrorData.Gaze.Direction = Quaternion.Lerp(leftEye.transform.rotation, rightEye.transform.rotation, 0.5f) * Vector3.forward;
+            gazeErrorData.Gaze.isDataValid = leftEye.EyeTrackingEnabled && rightEye.EyeTrackingEnabled;
 
             return gazeErrorData;
         }
