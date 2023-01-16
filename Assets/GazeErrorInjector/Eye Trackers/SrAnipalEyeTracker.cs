@@ -93,17 +93,6 @@ namespace GazeErrorInjector
                 return Camera.main.transform;
             }
 
-            public override void Destroy() 
-            { 
-                SRanipal_Eye.WrapperUnRegisterEyeDataCallback(Marshal.GetFunctionPointerForDelegate((SRanipal_Eye.CallbackBasic)EyeCallback));
-                eye_callback_registered = false;
-            }
-
-            private static void EyeCallback(ref ViveSR.anipal.Eye.EyeData eye_data)
-            {
-                eyeData = eye_data;
-            }
-
         #else
         //TODO A LOT OF CODE REPETITION WITHIN THIS PART.
             public override bool Initialize()
