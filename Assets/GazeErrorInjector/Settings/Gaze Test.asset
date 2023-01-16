@@ -12,8 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c32c391e1b5ba544ba3a412f9307f704, type: 3}
   m_Name: Gaze Test
   m_EditorClassIdentifier: 
-  gazeAccuracyErrorDirection: 34
-  gazeAccuracyError: 0.63
+  gazeAccuracyErrorDirection: 0
+  gazeAccuracyError: 6.56
   precisionErrorMode: 1
-  precisionError: 0.81
-  dataLossProbability: 0.16
+  precisionError: 1.12
+  dataLossProbability: 0

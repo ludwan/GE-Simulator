@@ -45,9 +45,6 @@ namespace GazeErrorInjector
             EditorGUILayout.PropertyField(activeProp);
             EditorGUILayout.PropertyField(modeProp);
 
-
-            
-
             ErrorMode mode = (ErrorMode) modeProp.enumValueIndex;
 
             serializedObject.ApplyModifiedProperties ();

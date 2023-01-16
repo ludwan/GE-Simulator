@@ -63,7 +63,7 @@ namespace GazeErrorInjector
         {
             if (!_isActive) return;
 
-            Vector3 pos;
+            Vector3 pos = Vector3.zero;
             Ray ray = new Ray();
 
             switch(_eye)
@@ -105,9 +105,17 @@ namespace GazeErrorInjector
                     }
                     break;
             }
+            
 
-            pos = ray.GetPoint(_particleDistance);
-            PlaceParticle(pos, _color, _particleSize);
+            if(ray.direction == Vector3.zero)
+            {
+                PlaceParticle(pos, Color.white, 0);
+            }
+            else
+            {
+                pos = ray.GetPoint(_particleDistance);
+                PlaceParticle(pos, _color, _particleSize);
+            }
             _particleSystem.SetParticles(_particles, _particles.Length);
         }
 

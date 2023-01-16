@@ -13,10 +13,10 @@ namespace GazeErrorInjector
 
             if(val <= dataLossProbability)
             {
-                return direction;
+                return Vector3.zero;
             }
             
-            return Vector3.zero;
+            return direction;
         }
     }
 }

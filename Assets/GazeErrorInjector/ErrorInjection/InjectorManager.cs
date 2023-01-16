@@ -89,6 +89,8 @@ namespace GazeErrorInjector
             if(!isActive) return;
             GazeErrorData data = _eyeTracker.GetGazeData();
             LatestErrorData = AddError(data);
+            //print($"x: {LatestErrorData.Gaze.Direction.x}, y: {LatestErrorData.Gaze.Direction.y}, z: {LatestErrorData.Gaze.Direction.z}");
+            print($"Valid: {LatestErrorData.Gaze.isErrorDataValid}, Origin: {LatestErrorData.Gaze.Origin}, Direction: {LatestErrorData.Gaze.Direction}");
         }
 
         // Update is called once per frame
@@ -99,6 +101,11 @@ namespace GazeErrorInjector
             {
                 ToggleErrors();
             }
+
+            if(!isActive) return;
+            UpdateErrorSettings(gazeSettings);
+            UpdateErrorSettings(rightEyeSettings);
+            UpdateErrorSettings(leftEyeSettings);
         }
 
         // void OnApplicationQuit() 
@@ -157,25 +164,25 @@ namespace GazeErrorInjector
             data.RightEye = AddErrorData(data.RightEye, rightEyeSettings);
             // Cyclopean Eye
 
-            if(!data.LeftEye.ErrorDataLoss && !data.RightEye.ErrorDataLoss)
+            if(data.LeftEye.isErrorDataValid && data.RightEye.isErrorDataValid)
             {
                 data.Gaze.ErrorDirection = (data.LeftEye.ErrorDirection + data.RightEye.ErrorDirection) / 2f;
-                data.Gaze.ErrorDataLoss = false;
+                data.Gaze.isErrorDataValid = false;
             }
-            else if (!data.LeftEye.ErrorDataLoss && data.LeftEye.ErrorDataLoss)
+            else if (data.LeftEye.isErrorDataValid && !data.RightEye.isErrorDataValid)
             {
                 data.Gaze.ErrorDirection = data.LeftEye.ErrorDirection;
-                data.Gaze.ErrorDataLoss = false;
+                data.Gaze.isErrorDataValid = false;
             }
-            else if (data.LeftEye.ErrorDataLoss && !data.LeftEye.ErrorDataLoss)
+            else if (!data.LeftEye.isErrorDataValid && data.RightEye.isErrorDataValid)
             {
                 data.Gaze.ErrorDirection = data.RightEye.ErrorDirection;
-                data.Gaze.ErrorDataLoss = false;
+                data.Gaze.isErrorDataValid = false;
             }
-            else if (data.LeftEye.ErrorDataLoss && data.LeftEye.ErrorDataLoss)
+            else if (!data.LeftEye.isErrorDataValid && !data.RightEye.isErrorDataValid)
             {
                 data.Gaze.ErrorDirection = Vector3.zero;
-                data.Gaze.ErrorDataLoss = true;
+                data.Gaze.isErrorDataValid = true;
             }
             return data;
         }
@@ -208,11 +215,12 @@ namespace GazeErrorInjector
 
             if(errorDirection == Vector3.zero)
             {
-                data.ErrorDataLoss = true;
+                
+                data.isErrorDataValid = false;
             }
             else
             {
-                data.ErrorDataLoss = false;
+                data.isErrorDataValid = true;
             }
             return data;
         }
@@ -220,6 +228,14 @@ namespace GazeErrorInjector
         private Vector3 AddError(Vector3 dir, GazeErrorSettings settings)
         {
             InjectorContainer container = injectors[settings];
+
+            dir = container.dataLoss.Inject(dir);
+
+            if(dir == Vector3.zero)
+            {
+                print(dir);
+                return dir;
+            }
 
             dir = container.accuracy.Inject(dir);
             switch(settings.precisionErrorMode)
@@ -231,8 +247,6 @@ namespace GazeErrorInjector
                     dir = container.uniform.Inject(dir);
                     break;
             }
-
-            dir = container.dataLoss.Inject(dir);
             return dir;
         }
 

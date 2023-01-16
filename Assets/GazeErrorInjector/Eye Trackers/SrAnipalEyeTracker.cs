@@ -15,10 +15,13 @@ namespace GazeErrorInjector
         #if VIVE_SDK
             private static ViveSR.anipal.Eye.EyeData eyeData = new ViveSR.anipal.Eye.EyeData();
             private static bool eye_callback_registered = false;
+            private Transform origin;
 
             public override bool Initialize()
             {
                 if (!SRanipal_Eye_API.IsViveProEye()) return false;
+
+                origin = GetOriginTransform();
 
                 return (SRanipal_Eye_Framework.Status == SRanipal_Eye_Framework.FrameworkStatus.WORKING);
 
@@ -55,14 +58,20 @@ namespace GazeErrorInjector
                 //Gaze
                 newData.Gaze.Timestamp = Time.unscaledTime;
                 newData.Gaze.isDataValid = SRanipal_Eye.GetGazeRay(GazeIndex.COMBINE, out newData.Gaze.Origin, out newData.Gaze.Direction);
+                newData.Gaze.Direction = origin.TransformDirection(newData.Gaze.Direction);
+                newData.Gaze.Origin = origin.TransformPoint(newData.Gaze.Origin);
 
                 //Left Eye
                 newData.LeftEye.Timestamp = Time.unscaledTime;
                 newData.LeftEye.isDataValid = SRanipal_Eye.GetGazeRay(GazeIndex.LEFT, out newData.LeftEye.Origin, out newData.LeftEye.Direction);
+                newData.LeftEye.Direction = origin.TransformDirection(newData.LeftEye.Direction);
+                newData.LeftEye.Origin = origin.TransformPoint(newData.LeftEye.Origin);
 
                 //Right Eye
                 newData.RightEye.Timestamp = Time.unscaledTime;
                 newData.RightEye.isDataValid = SRanipal_Eye.GetGazeRay(GazeIndex.RIGHT, out newData.RightEye.Origin, out newData.RightEye.Direction);
+                newData.RightEye.Direction = origin.TransformDirection(newData.RightEye.Direction);
+                newData.RightEye.Origin = origin.TransformPoint(newData.RightEye.Origin);
 
                 return newData;
             }
