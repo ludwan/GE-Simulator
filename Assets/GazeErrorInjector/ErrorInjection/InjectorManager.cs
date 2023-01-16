@@ -46,7 +46,6 @@ namespace GazeErrorInjector
 
         public delegate void NewErrorData(GazeErrorData data);
         public event NewErrorData OnNewErrorData;
-
         private GazeErrorData _latestErrorData;
         public GazeErrorData LatestErrorData 
         {
@@ -90,7 +89,7 @@ namespace GazeErrorInjector
             GazeErrorData data = _eyeTracker.GetGazeData();
             LatestErrorData = AddError(data);
             //print($"x: {LatestErrorData.Gaze.Direction.x}, y: {LatestErrorData.Gaze.Direction.y}, z: {LatestErrorData.Gaze.Direction.z}");
-            print($"Valid: {LatestErrorData.Gaze.isErrorDataValid}, Origin: {LatestErrorData.Gaze.Origin}, Direction: {LatestErrorData.Gaze.Direction}");
+//            print($"Valid: {LatestErrorData.Gaze.isErrorDataValid}, Origin: {LatestErrorData.Gaze.Origin}, Direction: {LatestErrorData.Gaze.Direction}");
         }
 
         // Update is called once per frame
@@ -107,14 +106,6 @@ namespace GazeErrorInjector
             UpdateErrorSettings(rightEyeSettings);
             UpdateErrorSettings(leftEyeSettings);
         }
-
-        // void OnApplicationQuit() 
-        // {
-        //     if(_eyeTracker != null)
-        //     {
-        //         UnsubscribeToGaze();
-        //     }
-        // }
 
         public void ToggleErrors()
         {
@@ -152,6 +143,15 @@ namespace GazeErrorInjector
         private GazeErrorData AddNoError(GazeErrorData data)
         {
             data.Mode = ErrorMode.None;
+
+            data.Gaze.ErrorDirection = data.Gaze.Direction;
+            data.Gaze.isErrorDataValid = data.Gaze.isDataValid;
+
+            data.LeftEye.ErrorDirection = data.LeftEye.Direction;
+            data.LeftEye.isErrorDataValid = data.LeftEye.isDataValid;
+
+            data.RightEye.ErrorDirection = data.RightEye.Direction;
+            data.RightEye.isErrorDataValid = data.RightEye.isDataValid;
             return data;
         }
 
@@ -210,18 +210,26 @@ namespace GazeErrorInjector
             data.PrecisionMode = settings.precisionErrorMode;
             data.DataLossProbability = settings.dataLossProbability;
 
-            Vector3 errorDirection = AddError(data.Direction, settings);
-            data.ErrorDirection = errorDirection;
-
-            if(errorDirection == Vector3.zero)
+            if(!data.isDataValid)
             {
-                
-                data.isErrorDataValid = false;
+                data.ErrorDirection = data.Direction;
+                data.isErrorDataValid = data.isDataValid;
             }
             else
             {
-                data.isErrorDataValid = true;
-            }
+                Vector3 errorDirection = AddError(data.Direction, settings);
+                data.ErrorDirection = errorDirection;
+
+                if(errorDirection == Vector3.zero)
+                {
+                    
+                    data.isErrorDataValid = false;
+                }
+                else
+                {
+                    data.isErrorDataValid = true;
+                }
+            }        
             return data;
         }
 
@@ -233,7 +241,7 @@ namespace GazeErrorInjector
 
             if(dir == Vector3.zero)
             {
-                print(dir);
+ //               print(dir);
                 return dir;
             }
 

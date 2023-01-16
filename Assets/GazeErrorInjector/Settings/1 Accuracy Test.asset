@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: c32c391e1b5ba544ba3a412f9307f704, type: 3}
-  m_Name: Gaze Test
+  m_Name: 1 Accuracy Test
   m_EditorClassIdentifier: 
   gazeAccuracyErrorDirection: 0
   gazeAccuracyError: 5

@@ -58,18 +58,30 @@ namespace GazeErrorInjector
                 //Gaze
                 newData.Gaze.Timestamp = Time.unscaledTime;
                 newData.Gaze.isDataValid = SRanipal_Eye.GetGazeRay(GazeIndex.COMBINE, out newData.Gaze.Origin, out newData.Gaze.Direction);
+                if(newData.Gaze.Direction == Vector3.forward)
+                {
+                    newData.Gaze.isDataValid = false;
+                }
                 newData.Gaze.Direction = origin.TransformDirection(newData.Gaze.Direction);
                 newData.Gaze.Origin = origin.TransformPoint(newData.Gaze.Origin);
 
                 //Left Eye
                 newData.LeftEye.Timestamp = Time.unscaledTime;
                 newData.LeftEye.isDataValid = SRanipal_Eye.GetGazeRay(GazeIndex.LEFT, out newData.LeftEye.Origin, out newData.LeftEye.Direction);
+                if(newData.LeftEye.Direction == Vector3.forward)
+                {
+                    newData.LeftEye.isDataValid = false;
+                }
                 newData.LeftEye.Direction = origin.TransformDirection(newData.LeftEye.Direction);
                 newData.LeftEye.Origin = origin.TransformPoint(newData.LeftEye.Origin);
 
                 //Right Eye
                 newData.RightEye.Timestamp = Time.unscaledTime;
                 newData.RightEye.isDataValid = SRanipal_Eye.GetGazeRay(GazeIndex.RIGHT, out newData.RightEye.Origin, out newData.RightEye.Direction);
+                if(newData.LeftEye.Direction == Vector3.forward)
+                {
+                    newData.LeftEye.isDataValid = false;
+                }
                 newData.RightEye.Direction = origin.TransformDirection(newData.RightEye.Direction);
                 newData.RightEye.Origin = origin.TransformPoint(newData.RightEye.Origin);
 
