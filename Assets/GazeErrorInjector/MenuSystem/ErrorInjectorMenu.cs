@@ -85,8 +85,7 @@ namespace GazeErrorInjector
             if (gazeSettingsUI == null)
                 return;
 
-            gazeSettingsUI.gameObject.SetActive(isVisible);
-            gazeSettingsUI.transform.parent.GetComponent<RectTransform>().SetSizeWithCurrentAnchors(RectTransform.Axis.Vertical, isVisible ? defaultHeight : 0);
+            gazeSettingsUI.transform.parent.gameObject.SetActive(isVisible);
         }
 
         private void SetupGazeSettingsUI()
