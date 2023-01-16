@@ -24,7 +24,7 @@ namespace GazeErrorInjector
         public bool isActive = true;
         public KeyCode toggleKey = KeyCode.None;
         public EyeTrackerList EyeTrackerSDK;
-
+        public int samepleRate = 120;
         public ErrorMode gazeMode;
 
         public GazeErrorSettings gazeSettings;
@@ -70,9 +70,10 @@ namespace GazeErrorInjector
         {
             Debug.Log("Enabling");
             InitEyeTracker();
+            Time.fixedDeltaTime = (float) 1 / samepleRate;
             if(_eyeTracker != null)
             {
-                SubscribeToGaze();
+                // SubscribeToGaze();
                 injectors.Add(gazeSettings, AddComponents("Gaze", gazeSettings));
                 injectors.Add(rightEyeSettings, AddComponents("Right Eye", rightEyeSettings));
                 injectors.Add(leftEyeSettings, AddComponents("Left Eye", leftEyeSettings));
@@ -83,6 +84,13 @@ namespace GazeErrorInjector
             }
         }
 
+        void FixedUpdate() 
+        {
+            if(!isActive) return;
+            GazeErrorData data = _eyeTracker.GetGazeData();
+            LatestErrorData = AddError(data);
+        }
+
         // Update is called once per frame
         void Update()
         {
@@ -91,30 +99,28 @@ namespace GazeErrorInjector
             {
                 ToggleErrors();
             }
-
-            if(!isActive) return;
         }
 
-        void OnApplicationQuit() 
-        {
-            if(_eyeTracker != null)
-            {
-                UnsubscribeToGaze();
-            }
-        }
+        // void OnApplicationQuit() 
+        // {
+        //     if(_eyeTracker != null)
+        //     {
+        //         UnsubscribeToGaze();
+        //     }
+        // }
 
         public void ToggleErrors()
         {
             isActive = !isActive;
         }
 
-        private void OnEyeTrackerData (GazeErrorData data)
-        {
-            if(isActive)
-            {
-                LatestErrorData = AddError(data);
-            }
-        }
+        // private void OnEyeTrackerData (GazeErrorData data)
+        // {
+        //     if(isActive)
+        //     {
+        //         LatestErrorData = AddError(data);
+        //     }
+        // }
 
         private GazeErrorData AddError(GazeErrorData data)
         {
@@ -230,15 +236,15 @@ namespace GazeErrorInjector
             return dir;
         }
 
-        private void SubscribeToGaze()
-        {
-            _eyeTracker.OnNewGazeData += OnEyeTrackerData;
-        }
+        // private void SubscribeToGaze()
+        // {
+        //     _eyeTracker.OnNewGazeData += OnEyeTrackerData;
+        // }
 
-        private void UnsubscribeToGaze()
-        {
-            _eyeTracker.OnNewGazeData -= OnEyeTrackerData;
-        }
+        // private void UnsubscribeToGaze()
+        // {
+        //     _eyeTracker.OnNewGazeData -= OnEyeTrackerData;
+        // }
 
         private void InitEyeTracker()
         {

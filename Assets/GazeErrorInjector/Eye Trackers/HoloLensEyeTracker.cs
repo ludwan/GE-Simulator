@@ -20,10 +20,10 @@ namespace GazeErrorInjector
                 return _eyeGazeProvider.IsEyeTrackingEnabled;
             }
 
-            void Update()
-            {
-                LatestData = GetGazeData();
-            }
+            // void Update()
+            // {
+            //     LatestData = GetGazeData();
+            // }
 
             public override GazeErrorData GetGazeData()
             {

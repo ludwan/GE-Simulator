@@ -33,11 +33,11 @@ namespace GazeErrorInjector
             return true;
         }
 
-        void Update()
-        {
-            LatestData = GetGazeData();
-            // UpdateDebugObjects();
-        }
+        // void Update()
+        // {
+        //     LatestData = GetGazeData();
+        //     // UpdateDebugObjects();
+        // }
 
         public override GazeErrorData GetGazeData()
         {

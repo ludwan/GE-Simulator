@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace GazeErrorInjector
 {
-    public abstract class EyeTracker : MonoBehaviour, IEyeTracker 
+    public abstract class EyeTracker : IEyeTracker 
     {
         public delegate void NewGazeData(GazeErrorData data);
         public event NewGazeData OnNewGazeData;

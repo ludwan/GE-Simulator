@@ -11,6 +11,6 @@ namespace GazeErrorInjector
         public float gazeAccuracyError;
         public PrecisionErrorMode precisionErrorMode;
         public float precisionError;
-        public float dataLossProbability;
+        [Range(0f, 1f)] public float dataLossProbability;
     }
 }

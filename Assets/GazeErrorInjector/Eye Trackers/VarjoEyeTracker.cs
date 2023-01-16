@@ -39,14 +39,14 @@ namespace GazeErrorInjector
             return VarjoEyeTracking.IsGazeAllowed() && VarjoEyeTracking.IsGazeCalibrated();
         }
 
-        void Update()
-        {
-            LatestData = GetGazeData();
+        // void Update()
+        // {
+        //     LatestData = GetGazeData();
 
-            // Debug.Log($"Gaze -> O:{LatestData?.Gaze.Origin}, D:{LatestData?.Gaze.Direction}");
-            // Debug.Log($"Left -> O:{LatestData?.LeftEye.Origin}, D:{LatestData?.LeftEye.Direction}");
-            // Debug.Log($"Right -> O:{LatestData?.RightEye.Origin}, D:{LatestData?.RightEye.Direction}");
-        }
+        //     // Debug.Log($"Gaze -> O:{LatestData?.Gaze.Origin}, D:{LatestData?.Gaze.Direction}");
+        //     // Debug.Log($"Left -> O:{LatestData?.LeftEye.Origin}, D:{LatestData?.LeftEye.Direction}");
+        //     // Debug.Log($"Right -> O:{LatestData?.RightEye.Origin}, D:{LatestData?.RightEye.Direction}");
+        // }
 
         public override GazeErrorData GetGazeData()
         {
