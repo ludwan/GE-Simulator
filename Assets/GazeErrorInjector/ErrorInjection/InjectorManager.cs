@@ -287,6 +287,7 @@ namespace GazeErrorInjector
             } 
             try
             {
+                //return Activator.CreateInstance(eyeTrackerType) as EyeTracker;
                 return this.gameObject.AddComponent(eyeTrackerType) as EyeTracker;
             }
             catch (Exception) 
