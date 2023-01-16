@@ -32,7 +32,7 @@ namespace GazeErrorInjector
 
         public static string GetEyeTrackerCompilerFlag(EyeTrackerList eyeTracker)
         {
-            switch(eyeTracker)
+            switch (eyeTracker)
             {
                 case EyeTrackerList.HTCViveSranipal:
                     return SranipalCompilerFlag;
@@ -47,13 +47,13 @@ namespace GazeErrorInjector
                 case EyeTrackerList.QuestPro:
                     return QuestProCompilerFlag;
                 default:
-                    return null; 
+                    return null;
             }
         }
 
         public static string GetEyeTrackerName(EyeTrackerList eyeTracker)
         {
-            switch(eyeTracker)
+            switch (eyeTracker)
             {
                 case EyeTrackerList.HTCViveSranipal:
                     return SranipalName;
@@ -68,7 +68,7 @@ namespace GazeErrorInjector
                 case EyeTrackerList.QuestPro:
                     return QuestProName;
                 default:
-                    return null; 
+                    return null;
             }
         }
 

@@ -66,11 +66,11 @@ namespace GazeErrorInjector
             Vector3 pos = Vector3.zero;
             Ray ray = new Ray();
 
-            switch(_eye)
+            switch (_eye)
             {
                 case Eye.Gaze:
                     ray.origin = data.Gaze.Origin;
-                    switch(_type)
+                    switch (_type)
                     {
                         case DataType.Error:
                             ray.direction = data.Gaze.ErrorDirection;
@@ -82,7 +82,7 @@ namespace GazeErrorInjector
                     break;
                 case Eye.Left:
                     ray.origin = data.LeftEye.Origin;
-                    switch(_type)
+                    switch (_type)
                     {
                         case DataType.Error:
                             ray.direction = data.LeftEye.ErrorDirection;
@@ -94,7 +94,7 @@ namespace GazeErrorInjector
                     break;
                 case Eye.Right:
                     ray.origin = data.RightEye.Origin;
-                    switch(_type)
+                    switch (_type)
                     {
                         case DataType.Error:
                             ray.direction = data.RightEye.ErrorDirection;
@@ -105,9 +105,9 @@ namespace GazeErrorInjector
                     }
                     break;
             }
-            
 
-            if(ray.direction == Vector3.zero)
+
+            if (ray.direction == Vector3.zero)
             {
                 PlaceParticle(pos, Color.white, 0);
             }

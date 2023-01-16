@@ -48,30 +48,24 @@ namespace GazeErrorInjector
         public event NewErrorData OnNewErrorData;
 
         private GazeErrorData _latestErrorData;
-        public GazeErrorData LatestErrorData 
+        public GazeErrorData LatestErrorData
         {
-            get
-            {
-                return _latestErrorData;
-            }
+            get { return _latestErrorData; }
             private set
             {
                 _latestErrorData = value;
-                if(OnNewErrorData != null)
-                {
-                    OnNewErrorData(_latestErrorData);
-                }
+                OnNewErrorData?.Invoke(_latestErrorData);
             }
         }
 
-        
+
         // Start is called before the first frame update
         void OnEnable()
         {
             Debug.Log("Enabling");
             InitEyeTracker();
-            Time.fixedDeltaTime = (float) 1 / samepleRate;
-            if(_eyeTracker != null)
+            Time.fixedDeltaTime = (float)1 / samepleRate;
+            if (_eyeTracker != null)
             {
                 // SubscribeToGaze();
                 injectors.Add(gazeSettings, AddComponents("Gaze", gazeSettings));
@@ -84,9 +78,9 @@ namespace GazeErrorInjector
             }
         }
 
-        void FixedUpdate() 
+        void FixedUpdate()
         {
-            if(!isActive) return;
+            if (!isActive) return;
             GazeErrorData data = _eyeTracker.GetGazeData();
             LatestErrorData = AddError(data);
             //print($"x: {LatestErrorData.Gaze.Direction.x}, y: {LatestErrorData.Gaze.Direction.y}, z: {LatestErrorData.Gaze.Direction.z}");
@@ -97,12 +91,12 @@ namespace GazeErrorInjector
         void Update()
         {
             //TODO: EXPAND TO UNITY EVENT
-            if(Input.GetKeyDown(toggleKey))
+            if (Input.GetKeyDown(toggleKey))
             {
                 ToggleErrors();
             }
 
-            if(!isActive) return;
+            if (!isActive) return;
             UpdateErrorSettings(gazeSettings);
             UpdateErrorSettings(rightEyeSettings);
             UpdateErrorSettings(leftEyeSettings);
@@ -164,7 +158,7 @@ namespace GazeErrorInjector
             data.RightEye = AddErrorData(data.RightEye, rightEyeSettings);
             // Cyclopean Eye
 
-            if(data.LeftEye.isErrorDataValid && data.RightEye.isErrorDataValid)
+            if (data.LeftEye.isErrorDataValid && data.RightEye.isErrorDataValid)
             {
                 data.Gaze.ErrorDirection = (data.LeftEye.ErrorDirection + data.RightEye.ErrorDirection) / 2f;
                 data.Gaze.isErrorDataValid = false;
@@ -192,7 +186,7 @@ namespace GazeErrorInjector
             data.Mode = ErrorMode.Independent;
             //Left Eye
             data.LeftEye = AddErrorData(data.LeftEye, leftEyeSettings);
-            
+
             // Right Eye
             data.RightEye = AddErrorData(data.RightEye, rightEyeSettings);
 
@@ -213,9 +207,9 @@ namespace GazeErrorInjector
             Vector3 errorDirection = AddError(data.Direction, settings);
             data.ErrorDirection = errorDirection;
 
-            if(errorDirection == Vector3.zero)
+            if (errorDirection == Vector3.zero)
             {
-                
+
                 data.isErrorDataValid = false;
             }
             else
@@ -231,14 +225,11 @@ namespace GazeErrorInjector
 
             dir = container.dataLoss.Inject(dir);
 
-            if(dir == Vector3.zero)
-            {
-                print(dir);
+            if (dir == Vector3.zero)
                 return dir;
-            }
 
             dir = container.accuracy.Inject(dir);
-            switch(settings.precisionErrorMode)
+            switch (settings.precisionErrorMode)
             {
                 case PrecisionErrorMode.Uniform:
                     dir = container.uniform.Inject(dir);
@@ -274,10 +265,10 @@ namespace GazeErrorInjector
             // }
 
             _eyeTracker = GetEyeTracker();
-            if(_eyeTracker != null)
+            if (_eyeTracker != null)
             {
                 _eyeTracker.Initialize();
-            }   
+            }
         }
 
         private void UpdateEyeTracker()
@@ -298,13 +289,13 @@ namespace GazeErrorInjector
             {
                 Debug.Log("Eye Tracker type not found");
                 return null;
-            } 
+            }
             try
             {
                 //return Activator.CreateInstance(eyeTrackerType) as EyeTracker;
                 return this.gameObject.AddComponent(eyeTrackerType) as EyeTracker;
             }
-            catch (Exception) 
+            catch (Exception)
             {
                 Debug.LogError("There was an error instantiating the Eye Tracker: " + eyeTrackerName);
             }
@@ -358,7 +349,7 @@ namespace GazeErrorInjector
             public AccuracyInjector accuracy;
             public GaussianPrecisionInjector gaussian;
             public UniformPrecisionInjector uniform;
-            public DataLossInjector dataLoss; 
+            public DataLossInjector dataLoss;
         }
     }
 }

@@ -13,40 +13,11 @@ namespace GazeErrorInjector
     public class VarjoEyeTracker : EyeTracker
     {
 #if VARJO_SDK
-        private List<InputDevice> devices = new List<InputDevice>();
-        private InputDevice device;
-
-        private Eyes eyes;
-        private VarjoEyeTracking.GazeData gazeData;
-
-        private Vector3 leftEyePosition;
-        private Quaternion leftEyeRotation;
-        private bool leftEyeValid = false;
-
-        private Vector3 rightEyePosition;
-        private Quaternion rightEyeRotation;
-        private bool rightEyeValid = false;
-
-        private Vector3 direction;
-        private Vector3 rayOrigin;
-
-        int gazeDataCount = 0;
-        float gazeTimer = 0f;
-
         public override bool Initialize()
         {
             VarjoEyeTracking.SetGazeOutputFrequency(VarjoEyeTracking.GazeOutputFrequency.MaximumSupported);
             return VarjoEyeTracking.IsGazeAllowed() && VarjoEyeTracking.IsGazeCalibrated();
         }
-
-        // void Update()
-        // {
-        //     LatestData = GetGazeData();
-
-        //     // Debug.Log($"Gaze -> O:{LatestData?.Gaze.Origin}, D:{LatestData?.Gaze.Direction}");
-        //     // Debug.Log($"Left -> O:{LatestData?.LeftEye.Origin}, D:{LatestData?.LeftEye.Direction}");
-        //     // Debug.Log($"Right -> O:{LatestData?.RightEye.Origin}, D:{LatestData?.RightEye.Direction}");
-        // }
 
         public override GazeErrorData GetGazeData()
         {
@@ -54,7 +25,7 @@ namespace GazeErrorInjector
                 return null;
 
             // Get gaze data if gaze is allowed and calibrated
-            gazeData = VarjoEyeTracking.GetGaze();
+            VarjoEyeTracking.GazeData gazeData = VarjoEyeTracking.GetGaze();
 
             GazeErrorData newData = new GazeErrorData();
 
@@ -83,14 +54,6 @@ namespace GazeErrorInjector
         {
             return Camera.main.transform;
         }
-
-        public override void Destroy() { }
-#else
-            public override bool Initialize()
-            {
-                Debug.LogError("Could not initialize Varjo Eye Tracker.");
-                return false;
-            }
 #endif
     }
 }
