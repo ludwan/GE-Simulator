@@ -11,11 +11,9 @@ namespace GazeErrorInjector
         {
             float val = Random.Range(0, 1f);
 
-            if(val <= dataLossProbability)
-            {
+            if (val <= dataLossProbability)
                 return Vector3.zero;
-            }
-            
+
             return direction;
         }
     }

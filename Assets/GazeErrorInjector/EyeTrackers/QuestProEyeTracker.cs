@@ -11,14 +11,11 @@ namespace GazeErrorInjector
 {
     public class QuestProEyeTracker : EyeTracker
     {
-
-
 #if QUESTPRO_SDK
         private OVREyeGaze leftEye;
         private OVREyeGaze rightEye;
 
         private OVRCameraRig ovrCameraRig;
-
 
         public override bool Initialize()
         {
@@ -28,16 +25,9 @@ namespace GazeErrorInjector
 
             SetupOVREyeGaze(OVREyeGaze.EyeId.Left, out leftEye);
             SetupOVREyeGaze(OVREyeGaze.EyeId.Right, out rightEye);
-            // SetupDebugObjects();
 
             return true;
         }
-
-        // void Update()
-        // {
-        //     LatestData = GetGazeData();
-        //     // UpdateDebugObjects();
-        // }
 
         public override GazeErrorData GetGazeData()
         {
@@ -87,45 +77,6 @@ namespace GazeErrorInjector
             // Set the tracking mode to TrackingSpace to ensure working tracking
             eyeGaze.TrackingMode = OVREyeGaze.EyeTrackingMode.TrackingSpace;
         }
-
-        public override void Destroy() { }
-        
-        /* private GameObject debugLeftEyeGaze;
-        private GameObject debugRightEyeGaze;
-        private GameObject debugEyeGaze;
-
-        private void SetupDebugObjects()
-        {
-            // Instantiate a debug object to visualize the eye gaze
-            debugLeftEyeGaze = GameObject.CreatePrimitive(PrimitiveType.Sphere);
-            debugLeftEyeGaze.transform.localScale = Vector3.one * 0.01f;
-            debugLeftEyeGaze.GetComponent<MeshRenderer>().material.color = Color.red;
-
-            debugRightEyeGaze = GameObject.CreatePrimitive(PrimitiveType.Sphere);
-            debugRightEyeGaze.transform.localScale = Vector3.one * 0.01f;
-            debugRightEyeGaze.GetComponent<MeshRenderer>().material.color = Color.blue;
-
-            debugEyeGaze = GameObject.CreatePrimitive(PrimitiveType.Sphere);
-            debugEyeGaze.transform.localScale = Vector3.one * 0.01f;
-            debugEyeGaze.GetComponent<MeshRenderer>().material.color = Color.green;
-        }
-
-        private void UpdateDebugObjects()
-        {
-            // Set debug object position to visualize gaze
-            debugLeftEyeGaze.transform.position = LatestData.LeftEye.Origin + LatestData.LeftEye.Direction * 1.0f;
-            debugRightEyeGaze.transform.position = LatestData.RightEye.Origin + LatestData.RightEye.Direction * 1.0f;
-            debugEyeGaze.transform.position = LatestData.Gaze.Origin + LatestData.Gaze.Direction * 1.0f;
-        } */
-
-#else
-        //TODO A LOT OF CODE REPETITION WITHIN THIS PART.
-        public override bool Initialize()
-        {
-            Debug.LogError("Could not initialize HoloLens 2 Eye Tracker.");
-            return false;
-        }
-
 #endif
     }
 }

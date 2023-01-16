@@ -10,23 +10,23 @@ namespace GazeErrorInjector
     {
         public SerializedProperty activeProp, toggleProp, sdkProp, modeProp, gazeSettings, leftEyeSettings, rightEyeSettings;
 
-        void OnEnable () 
+        void OnEnable()
         {
             // Setup the SerializedProperties
-            sdkProp = serializedObject.FindProperty ("EyeTrackerSDK");
-            toggleProp = serializedObject.FindProperty ("toggleKey");
-            activeProp = serializedObject.FindProperty ("isActive");
-            modeProp = serializedObject.FindProperty ("gazeMode");
-            gazeSettings = serializedObject.FindProperty ("gazeSettings");
-            leftEyeSettings = serializedObject.FindProperty ("leftEyeSettings");
-            rightEyeSettings = serializedObject.FindProperty ("rightEyeSettings");
+            sdkProp = serializedObject.FindProperty("EyeTrackerSDK");
+            toggleProp = serializedObject.FindProperty("toggleKey");
+            activeProp = serializedObject.FindProperty("isActive");
+            modeProp = serializedObject.FindProperty("gazeMode");
+            gazeSettings = serializedObject.FindProperty("gazeSettings");
+            leftEyeSettings = serializedObject.FindProperty("leftEyeSettings");
+            rightEyeSettings = serializedObject.FindProperty("rightEyeSettings");
         }
 
-        public override void OnInspectorGUI() 
+        public override void OnInspectorGUI()
         {
-            serializedObject.Update ();
+            serializedObject.Update();
 
-            if(Application.isPlaying)
+            if (Application.isPlaying)
             {
                 GUI.enabled = false;
                 EditorGUILayout.PropertyField(sdkProp);
@@ -35,23 +35,22 @@ namespace GazeErrorInjector
             else
             {
                 EditorGUILayout.PropertyField(sdkProp);
-                EyeTrackerList sdk = (EyeTrackerList) sdkProp.enumValueIndex;
+                EyeTrackerList sdk = (EyeTrackerList)sdkProp.enumValueIndex;
                 string compilerFlag = GazeErrorInjectorConstants.GetEyeTrackerCompilerFlag(sdk);
                 BuildTargetGroup buildTargetGroup = BuildPipeline.GetBuildTargetGroup(EditorUserBuildSettings.activeBuildTarget);
                 PlayerSettings.SetScriptingDefineSymbolsForGroup(buildTargetGroup, compilerFlag);
             }
-            
+
             EditorGUILayout.PropertyField(toggleProp);
             EditorGUILayout.PropertyField(activeProp);
             EditorGUILayout.PropertyField(modeProp);
 
-            ErrorMode mode = (ErrorMode) modeProp.enumValueIndex;
+            ErrorMode mode = (ErrorMode)modeProp.enumValueIndex;
 
-            serializedObject.ApplyModifiedProperties ();
+            serializedObject.ApplyModifiedProperties();
 
-            switch(mode) 
+            switch (mode)
             {
-
                 case ErrorMode.None:
                     break;
                 case ErrorMode.Independent:

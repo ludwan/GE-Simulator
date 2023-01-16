@@ -23,7 +23,7 @@ namespace GazeErrorInjector
         [SerializeField] private TextMeshProUGUI dataLossProbabilityValueLabel;
 
         private GazeErrorSettings gazeErrorSettings;
-        public GazeErrorSettings GazeErrorSettings    
+        public GazeErrorSettings GazeErrorSettings
         {
             get { return gazeErrorSettings; }
             set
