@@ -45,7 +45,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   isActive: 1
   toggleKey: 98
-  EyeTrackerSDK: 2
+  EyeTrackerSDK: 0
   samepleRate: 120
   gazeMode: 1
   gazeSettings: {fileID: 11400000, guid: 319b6b3f636279e49a48bbb728c93b40, type: 2}

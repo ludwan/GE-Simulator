@@ -285,6 +285,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5127668304798540600}
   - component: {fileID: 5127668304798540601}
+  - component: {fileID: 4031519748606716709}
   m_Layer: 0
   m_Name: GE-Menu
   m_TagString: Untagged
@@ -319,7 +320,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b63de70b409eeb74fb94732cd92b591c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  errorSimulator: {fileID: 0}
+  errorSimulator: {fileID: 4031519748606716709}
   Title: Gaze Error Simulator
   titleObject: {fileID: 5127668304319230215}
   isActiveToggle: {fileID: 5127668303970909516}
@@ -327,6 +328,26 @@ MonoBehaviour:
   gazeSettingsUI: {fileID: 3684766779677507041}
   leftEyeSettingsUI: {fileID: 5538210613181188943}
   rightEyeSettingsUI: {fileID: 5538210613755398245}
+--- !u!114 &4031519748606716709
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5127668304798540599}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fa177282952cd0a4b8fdb188a7a53c19, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  isActive: 1
+  toggleKey: 98
+  EyeTrackerSDK: 0
+  samepleRate: 120
+  gazeMode: 1
+  gazeSettings: {fileID: 11400000, guid: 319b6b3f636279e49a48bbb728c93b40, type: 2}
+  leftEyeSettings: {fileID: 11400000, guid: f430418bd7f963e46a65afd2bd703154, type: 2}
+  rightEyeSettings: {fileID: 11400000, guid: ba545d5573cb4fe46b7979919cdbb6c8, type: 2}
 --- !u!1001 &5081275964542247365
 PrefabInstance:
   m_ObjectHideFlags: 0
