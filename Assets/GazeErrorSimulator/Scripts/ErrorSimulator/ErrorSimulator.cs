@@ -183,6 +183,9 @@ namespace GazeErrorSimulator
 
         private GazeErrorData AddIndependentError(GazeErrorData data)
         {
+            if (data == null)
+                return data;
+                
             data.Mode = ErrorMode.Independent;
             //Left Eye
             data.LeftEye = AddErrorData(data.LeftEye, leftEyeSettings);

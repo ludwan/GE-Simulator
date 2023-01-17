@@ -61,7 +61,7 @@ namespace GazeErrorSimulator
 
         public void UpdatePosition(GazeErrorData data)
         {
-            if (!_isActive) return;
+            if (!_isActive || data == null) return;
 
             Vector3 pos = Vector3.zero;
             Ray ray = new Ray();
