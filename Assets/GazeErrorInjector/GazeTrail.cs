@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace GazeErrorInjector
+namespace GazeErrorSimulator
 {
     public enum DataType
     {
@@ -20,7 +20,7 @@ namespace GazeErrorInjector
     public class GazeTrail : MonoBehaviour
     {
 
-        public InjectorManager _manager;
+        public ErrorSimulator _manager;
         [SerializeField] private bool _isActive = true;
         [SerializeField] private Eye _eye = Eye.Gaze;
         [SerializeField] private DataType _type = DataType.Error;

@@ -3,10 +3,10 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;
 
-namespace GazeErrorInjector
+namespace GazeErrorSimulator
 {
-    [CustomEditor(typeof(InjectorManager)), CanEditMultipleObjects]
-    public class InjectorManagerEditor : Editor
+    [CustomEditor(typeof(ErrorSimulator)), CanEditMultipleObjects]
+    public class ErrorSimulatorEditor : Editor
     {
         public SerializedProperty activeProp, toggleProp, sdkProp, modeProp, gazeSettings, leftEyeSettings, rightEyeSettings;
 
@@ -36,7 +36,7 @@ namespace GazeErrorInjector
             {
                 EditorGUILayout.PropertyField(sdkProp);
                 EyeTrackerList sdk = (EyeTrackerList)sdkProp.enumValueIndex;
-                string compilerFlag = GazeErrorInjectorConstants.GetEyeTrackerCompilerFlag(sdk);
+                string compilerFlag = SimulatorConstants.GetEyeTrackerCompilerFlag(sdk);
                 BuildTargetGroup buildTargetGroup = BuildPipeline.GetBuildTargetGroup(EditorUserBuildSettings.activeBuildTarget);
                 PlayerSettings.SetScriptingDefineSymbolsForGroup(buildTargetGroup, compilerFlag);
             }

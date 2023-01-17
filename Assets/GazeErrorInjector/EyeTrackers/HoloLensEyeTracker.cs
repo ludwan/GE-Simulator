@@ -7,7 +7,7 @@ using Microsoft.MixedReality.Toolkit;
 using Microsoft.MixedReality.Toolkit.Input;
 #endif
 
-namespace GazeErrorInjector
+namespace GazeErrorSimulator
 {
     public class HoloLensEyeTracker : EyeTracker
     {

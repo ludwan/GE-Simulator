@@ -2,9 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace GazeErrorInjector
+namespace GazeErrorSimulator
 {
-    public class GaussianPrecisionInjector : PrecisionInjector
+    public class GaussianPrecisionSimulator : PrecisionSimulator
     {
         public override Vector3 Inject(Vector3 direction)
         {

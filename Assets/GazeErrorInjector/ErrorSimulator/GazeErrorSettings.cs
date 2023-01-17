@@ -2,9 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace GazeErrorInjector
+namespace GazeErrorSimulator
 {
-    [CreateAssetMenu(fileName = "New Error Settings", menuName = "Gaze Error Injector")]
+    [CreateAssetMenu(fileName = "New Error Settings", menuName = "Gaze Error Settings")]
     public class GazeErrorSettings : ScriptableObject
     {
         [Range(0f, 360f)] public float gazeAccuracyErrorDirection;

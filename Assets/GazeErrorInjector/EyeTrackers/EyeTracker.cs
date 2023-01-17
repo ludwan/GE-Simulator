@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace GazeErrorInjector
+namespace GazeErrorSimulator
 {
     public abstract class EyeTracker : MonoBehaviour, IEyeTracker
     {

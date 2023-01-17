@@ -2,12 +2,12 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace GazeErrorInjector
+namespace GazeErrorSimulator
 {
     public class Tester : MonoBehaviour
     {
-        public AccuracyInjector injector;
-        public PrecisionInjector precInjector;
+        public AccuracySimulator accSimulator;
+        public PrecisionSimulator precSimulator;
         // Start is called before the first frame update
         void Start()
         {
@@ -19,10 +19,10 @@ namespace GazeErrorInjector
         {
             Debug.DrawRay(Vector3.zero, Vector3.forward * 10f, Color.red);
 
-            Vector3 errDir = injector.Inject(Vector3.forward);
+            Vector3 errDir = accSimulator.Inject(Vector3.forward);
             Debug.DrawRay(Vector3.zero, errDir * 10f, Color.blue);
 
-            errDir = precInjector.Inject(errDir);
+            errDir = precSimulator.Inject(errDir);
             Debug.DrawRay(Vector3.zero, errDir * 10f, Color.green);
         }
     }

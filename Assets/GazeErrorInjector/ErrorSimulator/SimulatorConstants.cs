@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace GazeErrorInjector
+namespace GazeErrorSimulator
 {
     public enum EyeTrackerList
     {
@@ -12,17 +12,17 @@ namespace GazeErrorInjector
         QuestPro
     }
 
-    public static class GazeErrorInjectorConstants
+    public static class SimulatorConstants
     {
         public const string SranipalCompilerFlag = "VIVE_SDK";
         public const string VarjoCompilerFlag = "VARJO_SDK";
         public const string HololensCompilerFlag = "HOLOLENS_SDK";
         public const string QuestProCompilerFlag = "QUESTPRO_SDK";
 
-        public const string SranipalName = "GazeErrorInjector.SrAnipalEyeTracker";
-        public const string VarjoName = "GazeErrorInjector.VarjoEyeTracker";
-        public const string HoloLensName = "GazeErrorInjector.HoloLensEyeTracker";
-        public const string QuestProName = "GazeErrorInjector.QuestProEyeTracker";
+        public const string SranipalName = "GazeErrorSimulator.SrAnipalEyeTracker";
+        public const string VarjoName = "GazeErrorSimulator.VarjoEyeTracker";
+        public const string HoloLensName = "GazeErrorSimulator.HoloLensEyeTracker";
+        public const string QuestProName = "GazeErrorSimulator.QuestProEyeTracker";
 
         public static string GetEyeTrackerCompilerFlag(EyeTrackerList eyeTracker)
         {

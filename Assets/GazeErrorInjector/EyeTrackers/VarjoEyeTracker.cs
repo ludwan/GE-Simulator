@@ -8,7 +8,7 @@ using UnityEngine.XR;
 using Varjo.XR;
 #endif
 
-namespace GazeErrorInjector
+namespace GazeErrorSimulator
 {
     public class VarjoEyeTracker : EyeTracker
     {

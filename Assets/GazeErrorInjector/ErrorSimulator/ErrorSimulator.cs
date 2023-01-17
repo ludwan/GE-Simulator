@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEditor;
 
-namespace GazeErrorInjector
+namespace GazeErrorSimulator
 {
     public enum ErrorMode
     {
@@ -19,7 +19,7 @@ namespace GazeErrorInjector
         Gaussian
     }
 
-    public class InjectorManager : MonoBehaviour
+    public class ErrorSimulator : MonoBehaviour
     {
         public bool isActive = true;
         public KeyCode toggleKey = KeyCode.None;
@@ -31,7 +31,7 @@ namespace GazeErrorInjector
         public GazeErrorSettings leftEyeSettings;
         public GazeErrorSettings rightEyeSettings;
 
-        private Dictionary<GazeErrorSettings, InjectorContainer> injectors = new Dictionary<GazeErrorSettings, InjectorContainer>();
+        private Dictionary<GazeErrorSettings, SimulatorContainer> simulators = new Dictionary<GazeErrorSettings, SimulatorContainer>();
         private string _compilerFlagString;
         private string _eyeTrackerName;
         private EyeTracker _eyeTracker;
@@ -67,9 +67,9 @@ namespace GazeErrorInjector
             if (_eyeTracker != null)
             {
                 // SubscribeToGaze();
-                injectors.Add(gazeSettings, AddComponents("Gaze", gazeSettings));
-                injectors.Add(rightEyeSettings, AddComponents("Right Eye", rightEyeSettings));
-                injectors.Add(leftEyeSettings, AddComponents("Left Eye", leftEyeSettings));
+                simulators.Add(gazeSettings, AddComponents("Gaze", gazeSettings));
+                simulators.Add(rightEyeSettings, AddComponents("Right Eye", rightEyeSettings));
+                simulators.Add(leftEyeSettings, AddComponents("Left Eye", leftEyeSettings));
             }
             else
             {
@@ -229,7 +229,7 @@ namespace GazeErrorInjector
 
         private Vector3 AddError(Vector3 dir, GazeErrorSettings settings)
         {
-            InjectorContainer container = injectors[settings];
+            SimulatorContainer container = simulators[settings];
 
             dir = container.dataLoss.Inject(dir);
 
@@ -283,8 +283,8 @@ namespace GazeErrorInjector
 
         private void UpdateEyeTracker()
         {
-            _eyeTrackerName = GazeErrorInjectorConstants.GetEyeTrackerName(EyeTrackerSDK);
-            _compilerFlagString = GazeErrorInjectorConstants.GetEyeTrackerCompilerFlag(EyeTrackerSDK);
+            _eyeTrackerName = SimulatorConstants.GetEyeTrackerName(EyeTrackerSDK);
+            _compilerFlagString = SimulatorConstants.GetEyeTrackerCompilerFlag(EyeTrackerSDK);
         }
 
         private EyeTracker GetEyeTracker()
@@ -302,7 +302,6 @@ namespace GazeErrorInjector
             }
             try
             {
-                //return Activator.CreateInstance(eyeTrackerType) as EyeTracker;
                 return this.gameObject.AddComponent(eyeTrackerType) as EyeTracker;
             }
             catch (Exception)
@@ -314,11 +313,11 @@ namespace GazeErrorInjector
 
         private void UpdateErrorSettings(GazeErrorSettings settings)
         {
-            InjectorContainer container = injectors[settings];
+            SimulatorContainer container = simulators[settings];
             UpdateErrorSettings(container, settings);
         }
 
-        private void UpdateErrorSettings(InjectorContainer container, GazeErrorSettings settings)
+        private void UpdateErrorSettings(SimulatorContainer container, GazeErrorSettings settings)
         {
             container.accuracy.AccuracyAmplitude = settings.gazeAccuracyError;
             container.accuracy.AccuracyDirection = settings.gazeAccuracyErrorDirection;
@@ -327,15 +326,15 @@ namespace GazeErrorInjector
             container.dataLoss.dataLossProbability = settings.dataLossProbability;
         }
 
-        private InjectorContainer AddComponents(string name, GazeErrorSettings settings)
+        private SimulatorContainer AddComponents(string name, GazeErrorSettings settings)
         {
-            InjectorContainer container = new InjectorContainer();
+            SimulatorContainer container = new SimulatorContainer();
 
             GameObject go = new GameObject(name);
-            container.accuracy = go.AddComponent<AccuracyInjector>();
-            container.gaussian = go.AddComponent<GaussianPrecisionInjector>();
-            container.uniform = go.AddComponent<UniformPrecisionInjector>();
-            container.dataLoss = go.AddComponent<DataLossInjector>();
+            container.accuracy = go.AddComponent<AccuracySimulator>();
+            container.gaussian = go.AddComponent<GaussianPrecisionSimulator>();
+            container.uniform = go.AddComponent<UniformPrecisionSimulator>();
+            container.dataLoss = go.AddComponent<DataLossSimulator>();
 
             container.accuracy.Manager = this;
             container.gaussian.Manager = this;
@@ -353,13 +352,13 @@ namespace GazeErrorInjector
             return container;
         }
 
-        private class InjectorContainer
+        private class SimulatorContainer
         {
             public GameObject obj;
-            public AccuracyInjector accuracy;
-            public GaussianPrecisionInjector gaussian;
-            public UniformPrecisionInjector uniform;
-            public DataLossInjector dataLoss;
+            public AccuracySimulator accuracy;
+            public GaussianPrecisionSimulator gaussian;
+            public UniformPrecisionSimulator uniform;
+            public DataLossSimulator dataLoss;
         }
     }
 }

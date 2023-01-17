@@ -2,9 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace GazeErrorInjector
+namespace GazeErrorSimulator
 {
-    public class DataLossInjector : Injector
+    public class DataLossSimulator : Simulator
     {
         public float dataLossProbability = 0.5f;
         public override Vector3 Inject(Vector3 direction)

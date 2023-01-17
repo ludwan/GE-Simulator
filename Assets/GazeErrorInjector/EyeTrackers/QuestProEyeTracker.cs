@@ -7,7 +7,7 @@ using UnityEngine;
 
 #endif
 
-namespace GazeErrorInjector
+namespace GazeErrorSimulator
 {
     public class QuestProEyeTracker : EyeTracker
     {

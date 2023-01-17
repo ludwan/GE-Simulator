@@ -7,7 +7,7 @@ using System.Runtime.InteropServices;
 using ViveSR.anipal.Eye;
 #endif
 
-namespace GazeErrorInjector
+namespace GazeErrorSimulator
 {
     public class SrAnipalEyeTracker : EyeTracker
     {
@@ -115,7 +115,7 @@ namespace GazeErrorInjector
 
 // #endif
 
-// namespace GazeErrorInjector
+// namespace GazeErrorSimulator
 // {
 //     public class SrAnipalEyeTracker : EyeTracker
 //     {

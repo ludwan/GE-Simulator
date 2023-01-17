@@ -4,15 +4,15 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace GazeErrorInjector
+namespace GazeErrorSimulator
 {
     [ExecuteInEditMode]
-    public class ErrorInjectorMenu : MonoBehaviour
+    public class ErrorSimulatorMenu : MonoBehaviour
     {
-        [SerializeField] private InjectorManager injectorManager;
+        [SerializeField] private ErrorSimulator errorSimulator;
 
         [Header("Menu Settings")]
-        public string Title = "Gaze Error Injector";
+        public string Title = "Gaze Error Simulator";
         [SerializeField] private TextMeshProUGUI titleObject;
         [SerializeField] private Toggle isActiveToggle;
         [SerializeField] private TMP_Dropdown gazeModeDropdown;
@@ -27,22 +27,22 @@ namespace GazeErrorInjector
 
         void Start()
         {
-            if (injectorManager == null)
-                injectorManager = FindObjectOfType<InjectorManager>();
+            if (errorSimulator == null)
+                errorSimulator = FindObjectOfType<ErrorSimulator>();
 
             SetupGazeSettingsUI();
 
             if (isActiveToggle != null)
                 isActiveToggle.onValueChanged.AddListener((value) =>
                 {
-                    injectorManager.isActive = value;
+                    errorSimulator.isActive = value;
                 });
 
             if (gazeModeDropdown != null)
                 gazeModeDropdown.onValueChanged.AddListener((value) =>
                 {
-                    injectorManager.gazeMode = (ErrorMode)System.Enum.ToObject(typeof(ErrorMode), value);
-                    UpdateGazeErrorMode(injectorManager.gazeMode);
+                    errorSimulator.gazeMode = (ErrorMode)System.Enum.ToObject(typeof(ErrorMode), value);
+                    UpdateGazeErrorMode(errorSimulator.gazeMode);
                 });
         }
 
@@ -54,13 +54,13 @@ namespace GazeErrorInjector
             if (Application.isEditor == false || Application.isPlaying)
                 return;
 
-            isActiveToggle.isOn = injectorManager.isActive;
-            gazeModeDropdown.value = (int)injectorManager.gazeMode;
+            isActiveToggle.isOn = errorSimulator.isActive;
+            gazeModeDropdown.value = (int)errorSimulator.gazeMode;
         }
 
         void UpdateGazeErrorMode(ErrorMode value)
         {
-            switch (injectorManager.gazeMode)
+            switch (errorSimulator.gazeMode)
             {
                 case ErrorMode.Dependent:
                     SetGazeSettingsUIVisibility(gazeSettingsUI, false, gazeSettingsUIHeight);
@@ -93,17 +93,17 @@ namespace GazeErrorInjector
             if (gazeSettingsUI != null)
             {
                 gazeSettingsUIHeight = gazeSettingsUI.transform.parent.GetComponent<RectTransform>().rect.height;
-                gazeSettingsUI.GazeErrorSettings = injectorManager.gazeSettings;
+                gazeSettingsUI.GazeErrorSettings = errorSimulator.gazeSettings;
             }
             if (leftEyeSettingsUI != null)
             {
                 leftEyeSettingsUIHeight = leftEyeSettingsUI.transform.parent.GetComponent<RectTransform>().rect.height;
-                leftEyeSettingsUI.GazeErrorSettings = injectorManager.leftEyeSettings;
+                leftEyeSettingsUI.GazeErrorSettings = errorSimulator.leftEyeSettings;
             }
             if (rightEyeSettingsUI != null)
             {
                 rightEyeSettingsUIHeight = rightEyeSettingsUI.transform.parent.GetComponent<RectTransform>().rect.height;
-                rightEyeSettingsUI.GazeErrorSettings = injectorManager.rightEyeSettings;
+                rightEyeSettingsUI.GazeErrorSettings = errorSimulator.rightEyeSettings;
             }
         }
     }

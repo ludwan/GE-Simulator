@@ -2,9 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace GazeErrorInjector
+namespace GazeErrorSimulator
 {
-    public class AccuracyInjector : Injector
+    public class AccuracySimulator : Simulator
     {
         [Range(0f, 360f)] public float AccuracyDirection = 0;
         [Range(0f, 45f)] public float AccuracyAmplitude = 0;

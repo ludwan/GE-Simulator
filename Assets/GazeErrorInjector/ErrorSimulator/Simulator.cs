@@ -2,12 +2,12 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace GazeErrorInjector
+namespace GazeErrorSimulator
 {
-    public abstract class Injector : MonoBehaviour
+    public abstract class Simulator : MonoBehaviour
     {
         [SerializeField] protected Transform _hmd;
-        [SerializeField] public InjectorManager Manager;
+        [SerializeField] public ErrorSimulator Manager;
 
         public void Init()
         {

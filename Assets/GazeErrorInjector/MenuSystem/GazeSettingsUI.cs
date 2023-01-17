@@ -4,7 +4,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace GazeErrorInjector
+namespace GazeErrorSimulator
 {
     public class GazeSettingsUI : MonoBehaviour
     {

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 
-namespace GazeErrorInjector
+namespace GazeErrorSimulator
 {
     public class EyeErrorData : EyeData
     {
