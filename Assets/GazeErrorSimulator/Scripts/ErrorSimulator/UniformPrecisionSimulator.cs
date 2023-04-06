@@ -4,8 +4,16 @@ using UnityEngine;
 
 namespace GazeErrorSimulator
 {
+    /// <summary>
+    /// Precision error simulator based on a uniform distribution. Precision error is picked from a uniform distribution between 0 and error.
+    /// </summary>
     public class UniformPrecisionSimulator : PrecisionSimulator
     {
+        /// <summary>
+        /// Adds a precision error based on a random direction, and a random amplitude between 0 and error from a uniform distribution.
+        /// </summary>
+        /// <param name="direction">Gaze vector</param>
+        /// <returns>Gaze vector with added error.</returns>
         public override Vector3 Inject(Vector3 direction)
         {
             Vector2 pos = Random.insideUnitCircle * error;

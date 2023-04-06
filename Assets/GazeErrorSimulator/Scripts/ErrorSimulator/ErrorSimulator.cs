@@ -82,8 +82,6 @@ namespace GazeErrorSimulator
             if (!isActive) return;
             GazeErrorData data = _eyeTracker.GetGazeData();
             LatestErrorData = AddError(data);
-            //print($"x: {LatestErrorData.Gaze.Direction.x}, y: {LatestErrorData.Gaze.Direction.y}, z: {LatestErrorData.Gaze.Direction.z}");
-//            print($"Valid: {LatestErrorData.Gaze.isErrorDataValid}, Origin: {LatestErrorData.Gaze.Origin}, Direction: {LatestErrorData.Gaze.Direction}");
         }
 
         // Update is called once per frame
@@ -106,13 +104,6 @@ namespace GazeErrorSimulator
             isActive = !isActive;
         }
 
-        // private void OnEyeTrackerData (GazeErrorData data)
-        // {
-        //     if(isActive)
-        //     {
-        //         LatestErrorData = AddError(data);
-        //     }
-        // }
 
         private GazeErrorData AddError(GazeErrorData data)
         {
@@ -254,16 +245,6 @@ namespace GazeErrorSimulator
             return dir;
         }
 
-        // private void SubscribeToGaze()
-        // {
-        //     _eyeTracker.OnNewGazeData += OnEyeTrackerData;
-        // }
-
-        // private void UnsubscribeToGaze()
-        // {
-        //     _eyeTracker.OnNewGazeData -= OnEyeTrackerData;
-        // }
-
         private void InitEyeTracker()
         {
             if (_eyeTracker != null) return;
@@ -271,11 +252,6 @@ namespace GazeErrorSimulator
             Debug.Log("Initializing Eye Tracker: " + EyeTrackerSDK);
 
             UpdateEyeTracker();
-
-            // if (_compilerFlagString != null)
-            // {
-            //     PlayerSettings.SetScriptingDefineSymbolsForGroup(BuildTargetGroup.Standalone, _compilerFlagString);
-            // }
 
             _eyeTracker = GetEyeTracker();
             if (_eyeTracker != null)
@@ -354,6 +330,7 @@ namespace GazeErrorSimulator
             UpdateErrorSettings(container, settings);
             return container;
         }
+
 
         private class SimulatorContainer
         {
