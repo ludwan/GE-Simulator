@@ -49,6 +49,12 @@ namespace GazeErrorSimulator
             // Use the main camera as the origin
             return Camera.main.transform;
         }
+#else
+        public override bool Initialize()
+        {
+            Debug.LogError("Could not initialize HoloLens2 Eye Tracker.");
+            return false;
+        }
 #endif
     }
 }

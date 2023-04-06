@@ -77,6 +77,12 @@ namespace GazeErrorSimulator
             // Set the tracking mode to TrackingSpace to ensure working tracking
             eyeGaze.TrackingMode = OVREyeGaze.EyeTrackingMode.TrackingSpace;
         }
+#else
+        public override bool Initialize()
+        {
+            Debug.LogError("Could not initialize Meta Quest Pro Eye Tracker.");
+            return false;
+        }
 #endif
     }
 }

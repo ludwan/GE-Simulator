@@ -54,6 +54,13 @@ namespace GazeErrorSimulator
         {
             return Camera.main.transform;
         }
+
+#else
+        public override bool Initialize()
+        {
+            Debug.LogError("Could not initialize Varjo Eye Tracker.");
+            return false;
+        }
 #endif
     }
 }
