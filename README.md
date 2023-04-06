@@ -1,3 +1,8 @@
+[![Generic badge](https://img.shields.io/badge/Maintained-Yes-green.svg)](https://shields.io/)
+[![Generic badge](https://img.shields.io/badge/Software-C%23-blue.svg)](https://shields.io/)
+[![Generic badge](https://img.shields.io/badge/License-MIT-red.svg)](https://shields.io/)
+[![DOI](https://img.shields.io/badge/DOI-10.1145%2F3379156.3391374-yellowgreen)](https://doi.org/10.1145/3588015.3588417)
+
 # What is GE-Simulator
 
 GE-Simulator is a novel open-source tool that allows the simulation of accuracy, precision, and data loss errors during real-time usage by injecting eye tracking errors into the gaze signal from the head-mounted display.
@@ -10,7 +15,7 @@ Our toolkit allows designers to prototype new applications at different levels o
 
 * Unity 2020.3.42+
 * An eye tracking SDK. Currently supported eye tracking SDKs are:
-    * Vive's SRanipal
+    * Vive's SRanipal [v.1.3.3.0](https://developer.vive.com/resources/vive-sense/eye-and-facial-tracking-sdk/download/archive/1_3_3_0/)
     * The Mixed Reality Toolkit [v2.8.2](https://github.com/microsoft/MixedRealityToolkit-Unity/releases/tag/v2.8.2)
     * Oculus Integration [v47.0](https://developer.oculus.com/downloads/package/unity-integration/)
     * Varjo SDK [v3.3.0](https://github.com/varjocom/VarjoUnityXRPlugin/releases/tag/3.3.0)
