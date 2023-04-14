@@ -6,19 +6,33 @@ using UnityEditor;
 
 namespace GazeErrorSimulator
 {
+    /// <summary>
+    /// The mode of error for simulation.
+    /// </summary>
     public enum ErrorMode
     {
+        ///<summary>No errors are added to gaze.</summary>
         None,
+        ///<summary>Error is defined separately for left eye, right eye, and gaze.</summary>
         Independent,
+        ///<summary>Gaze error is based left eye and right eye errors defined by the user.</summary>
         Dependent,
     }
 
+    /// <summary>
+    /// The type of precision error.
+    /// </summary>
     public enum PrecisionErrorMode
     {
+        ///<summary>Uniform distribution (UniformPrecisionSimulator).</summary>
         Uniform,
+        ///<summary>Gaussian distribution (UniformPrecisionSimulator).</summary>
         Gaussian
     }
 
+    /// <summary>
+    /// Main class that handles all the error simulation. 
+    /// </summary>
     public class ErrorSimulator : MonoBehaviour
     {
         public bool isActive = true;
@@ -61,12 +75,10 @@ namespace GazeErrorSimulator
         // Start is called before the first frame update
         void OnEnable()
         {
-            Debug.Log("Enabling");
             InitEyeTracker();
             Time.fixedDeltaTime = (float)1 / samepleRate;
             if (_eyeTracker != null)
             {
-                // SubscribeToGaze();
                 simulators.Add(gazeSettings, AddComponents("Gaze", gazeSettings));
                 simulators.Add(rightEyeSettings, AddComponents("Right Eye", rightEyeSettings));
                 simulators.Add(leftEyeSettings, AddComponents("Left Eye", leftEyeSettings));
@@ -99,11 +111,11 @@ namespace GazeErrorSimulator
             UpdateErrorSettings(leftEyeSettings);
         }
 
+        
         public void ToggleErrors()
         {
             isActive = !isActive;
         }
-
 
         private GazeErrorData AddError(GazeErrorData data)
         {
