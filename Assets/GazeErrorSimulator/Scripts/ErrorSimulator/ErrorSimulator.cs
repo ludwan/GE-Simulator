@@ -75,6 +75,7 @@ namespace GazeErrorSimulator
         // Start is called before the first frame update
         void OnEnable()
         {
+            if (EyeTrackerSDK == EyeTrackerList.None) return;
             InitEyeTracker();
             Time.fixedDeltaTime = (float)1 / samepleRate;
             if (_eyeTracker != null)
@@ -91,7 +92,7 @@ namespace GazeErrorSimulator
 
         void FixedUpdate()
         {
-            if (!isActive) return;
+            if (!isActive || EyeTrackerSDK == EyeTrackerList.None) return;
             GazeErrorData data = _eyeTracker.GetGazeData();
             LatestErrorData = AddError(data);
         }
@@ -105,7 +106,7 @@ namespace GazeErrorSimulator
                 ToggleErrors();
             }
 
-            if (!isActive) return;
+            if (!isActive || EyeTrackerSDK == EyeTrackerList.None) return;
             UpdateErrorSettings(gazeSettings);
             UpdateErrorSettings(rightEyeSettings);
             UpdateErrorSettings(leftEyeSettings);
@@ -304,6 +305,7 @@ namespace GazeErrorSimulator
 
         private void UpdateErrorSettings(GazeErrorSettings settings)
         {
+            if (settings == null) return;
             SimulatorContainer container = simulators[settings];
             UpdateErrorSettings(container, settings);
         }

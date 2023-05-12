@@ -10,6 +10,7 @@ namespace GazeErrorSimulator
     public enum EyeTrackerList
     {
         None,
+        Camera,
         HTCViveSranipal,
         Varjo,
         HoloLens2,
@@ -29,6 +30,7 @@ namespace GazeErrorSimulator
         public const string QuestProCompilerFlag = "QUESTPRO_SDK";
 
         //List of eye tracker scripts.
+        public const string CameraName = "GazeErrorSimulator.CameraEyeTracker";
         public const string SranipalName = "GazeErrorSimulator.SrAnipalEyeTracker";
         public const string VarjoName = "GazeErrorSimulator.VarjoEyeTracker";
         public const string HoloLensName = "GazeErrorSimulator.HoloLensEyeTracker";
@@ -66,6 +68,8 @@ namespace GazeErrorSimulator
         {
             switch (eyeTracker)
             {
+                case EyeTrackerList.Camera:
+                    return CameraName;
                 case EyeTrackerList.HTCViveSranipal:
                     return SranipalName;
                 case EyeTrackerList.Varjo:
