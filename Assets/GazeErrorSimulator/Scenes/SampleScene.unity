@@ -919,7 +919,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 0
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 50, y: -30, z: 0}
 --- !u!1 &765198976
 GameObject:
@@ -1255,7 +1255,7 @@ RectTransform:
   - {fileID: 1741504726}
   - {fileID: 1732670779}
   m_Father: {fileID: 0}
-  m_RootOrder: 3
+  m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
@@ -1328,7 +1328,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 2
+  m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1661759337
 GameObject:
@@ -1362,7 +1362,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 1
+  m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1661759339
 MonoBehaviour:
@@ -1376,7 +1376,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: df5fa388187495e4d9579660a1a843d4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _manager: {fileID: 1661759342}
+  _errorSimulator: {fileID: 1661759342}
   _isActive: 1
   _eye: 0
   _type: 0
@@ -6172,6 +6172,7 @@ MonoBehaviour:
   isActive: 1
   toggleKey: 258
   EyeTrackerSDK: 0
+  samepleRate: 120
   gazeMode: 2
   gazeSettings: {fileID: 11400000, guid: 319b6b3f636279e49a48bbb728c93b40, type: 2}
   leftEyeSettings: {fileID: 11400000, guid: f430418bd7f963e46a65afd2bd703154, type: 2}
@@ -6602,7 +6603,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 4
+  m_RootOrder: 7
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &1903199263
 PrefabInstance:
