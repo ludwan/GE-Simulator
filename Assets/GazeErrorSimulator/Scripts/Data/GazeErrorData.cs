@@ -4,12 +4,18 @@ using UnityEngine;
 
 namespace GazeErrorSimulator
 {
+    /// <summary>
+    /// Original or simulated eye tracking data.
+    /// </summary>
     public enum DataType
     {
         Error,
         Original
     }
 
+    /// <summary>
+    /// The eye you wish to get data from.
+    /// </summary>
     public enum Eye
     {
         Gaze,
@@ -18,12 +24,24 @@ namespace GazeErrorSimulator
     }
     public class GazeErrorData
     {
+        /// <summary>
+        /// The current error mode.
+        /// </summary>
         public ErrorMode Mode;
 
+        /// <summary>
+        /// Error data for gaze (eyes combined).
+        /// </summary>
         public EyeErrorData Gaze;
 
+        /// <summary>
+        /// Error data for the right eye.
+        /// </summary>
         public EyeErrorData RightEye;
 
+        /// <summary>
+        /// Error data for the left eye.
+        /// </summary>
         public EyeErrorData LeftEye;
 
         public GazeErrorData() 
@@ -41,6 +59,12 @@ namespace GazeErrorSimulator
             RightEye = new EyeErrorData(rightEye);
         }
 
+        /// <summary>
+        /// Get gaze ray associated with errortype and eye.
+        /// </summary>
+        /// <param name="eye">Data from specified eye.</param>
+        /// <param name="type">Original or error simulated data.</param>
+        /// <returns>Gaze ray from specified data.</returns>
         public Ray GetGazeRay(Eye eye, DataType type)
         {
             Ray ray = new Ray();
@@ -59,6 +83,11 @@ namespace GazeErrorSimulator
             return ray;
         }
 
+        /// <summary>
+        /// Get error simulated gaze ray associated with eye.
+        /// </summary>
+        /// <param name="eye">Data from specified eye.</param>
+        /// <returns>Error simulated gaze ray from specified eye.</returns>
         private Ray GetErrorRay(Eye eye)
         {
             Ray ray = new Ray();
@@ -83,6 +112,11 @@ namespace GazeErrorSimulator
             return ray;
         }
 
+        /// <summary>
+        /// Get original gaze ray associated with eye.
+        /// </summary>
+        /// <param name="eye">Data from specified eye.</param>
+        /// <returns>Original gaze ray from specified eye.</returns>
         private Ray GetOriginalRay(Eye eye)
         {
             Ray ray = new Ray();

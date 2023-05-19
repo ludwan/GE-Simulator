@@ -4,11 +4,29 @@ using UnityEngine;
 
 namespace GazeErrorSimulator
 {
+    /// <summary>
+    /// Data class for data from a single eye.
+    /// </summary>
     public class EyeData
     {
+        /// <summary>
+        /// Timestamp of the eyetracker (Unity Time).
+        /// </summary>
         public float Timestamp;
+
+        /// <summary>
+        /// Origin of the gaze ray.
+        /// </summary>
         public Vector3 Origin;
+
+        /// <summary>
+        /// Direction of the gaze ray (World-space).
+        /// </summary>
         public Vector3 Direction;
+
+        /// <summary>
+        /// Validity of data.
+        /// </summary>
         public bool isDataValid;
 
         public EyeData() { }
