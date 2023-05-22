@@ -18,6 +18,14 @@ namespace GazeErrorSimulator
             _lineRenderer = GetComponent<LineRenderer>();
         }
 
+        /// <summary>
+        /// Update the positions of the gaze ray based on the latest gaze data.
+        /// </summary>
+
+        /// <summary>
+        /// Update the positions of the gaze ray based on the latest gaze data.
+        /// </summary>
+        /// <param name="data">The latest gaze data</param>
         public override void UpdatePosition(GazeErrorData data)
         {
             // Ensure that the line can and should be rendered
@@ -32,6 +40,10 @@ namespace GazeErrorSimulator
             _lineRenderer.SetPosition(1, ray.origin + ray.direction * rayDistance);
         }
 
+        /// <summary>
+        /// Set the active state of the gaze ray.
+        /// </summary>
+        /// <param name="activate">The active state of the gaze ray</param>
         public override void SetActive(bool activate)
         {
             base.SetActive(activate);

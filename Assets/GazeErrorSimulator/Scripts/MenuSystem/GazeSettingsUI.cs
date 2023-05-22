@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -8,19 +6,28 @@ namespace GazeErrorSimulator
 {
     public class GazeSettingsUI : MonoBehaviour
     {
-        [SerializeField] private Slider gazeAccuracyErrorDirectionSlider;
-        [SerializeField] private TextMeshProUGUI gazeAccuracyErrorDirectionValueLabel;
+        [SerializeField, Tooltip("The UI slider for the gaze accuracy error direction")]
+        private Slider gazeAccuracyErrorDirectionSlider;
+        [SerializeField, Tooltip("The UI label for the gaze accuracy error direction value")]
+        private TextMeshProUGUI gazeAccuracyErrorDirectionValueLabel;
 
-        [SerializeField] private Slider gazeAccuracyErrorSlider;
-        [SerializeField] private TextMeshProUGUI gazeAccuracyErrorValueLabel;
+        [SerializeField, Tooltip("The UI slider for the gaze accuracy error")]
+        private Slider gazeAccuracyErrorSlider;
+        [SerializeField, Tooltip("The UI label for the gaze accuracy error value")] 
+        private TextMeshProUGUI gazeAccuracyErrorValueLabel;
 
-        [SerializeField] private TMP_Dropdown precisionErrorModeDropdown;
+        [SerializeField, Tooltip("The UI dropdown for the precision error mode")] 
+        private TMP_Dropdown precisionErrorModeDropdown;
 
-        [SerializeField] private Slider precisionErrorSlider;
-        [SerializeField] private TextMeshProUGUI precisionErrorValueLabel;
+        [SerializeField, Tooltip("The UI slider for the precision error")] 
+        private Slider precisionErrorSlider;
+        [SerializeField, Tooltip("The UI label for the precision error value")] 
+        private TextMeshProUGUI precisionErrorValueLabel;
 
-        [SerializeField] private Slider dataLossProbabilitySlider;
-        [SerializeField] private TextMeshProUGUI dataLossProbabilityValueLabel;
+        [SerializeField, Tooltip("The UI slider for the data loss probability")] 
+        private Slider dataLossProbabilitySlider;
+        [SerializeField, Tooltip("The UI label for the data loss probability value")] 
+        private TextMeshProUGUI dataLossProbabilityValueLabel;
 
         private GazeErrorSettings gazeErrorSettings;
         public GazeErrorSettings GazeErrorSettings
@@ -28,6 +35,7 @@ namespace GazeErrorSimulator
             get { return gazeErrorSettings; }
             set
             {
+                // Set all the sliders, dropdown, and labels to the values of the gaze error settings
                 gazeErrorSettings = value;
                 gazeAccuracyErrorDirectionSlider.value = value.gazeAccuracyErrorDirection;
                 gazeAccuracyErrorDirectionValueLabel.text = value.gazeAccuracyErrorDirection.ToString();
@@ -43,45 +51,96 @@ namespace GazeErrorSimulator
 
         void Start()
         {
-            if (gazeAccuracyErrorDirectionSlider != null)
-                gazeAccuracyErrorDirectionSlider.onValueChanged.AddListener((value) =>
-                {
-                    int v = Mathf.RoundToInt(value);
-                    gazeErrorSettings.gazeAccuracyErrorDirection = v;
-                    gazeAccuracyErrorDirectionValueLabel.text = v.ToString();
-                });
+            SetupGazeAccErrDirSlider();
+            SetupGazeAccErrSlider();
+            SetupPrecErrModeDropdown();
+            SetupPrecErrSlider();
+            SetupDataLossPrbSlider();
+        }
 
+        /// <summary>
+        /// Add a listener to the gaze accuracy error direction slider.
+        /// When the slider value changes, the gaze accuracy error direction
+        /// is updated to the value of the slider (rounded to int).
+        /// </summary>
+        private void SetupGazeAccErrDirSlider()
+        {
+            if (gazeAccuracyErrorDirectionSlider == null)
+                return;
+
+            gazeAccuracyErrorDirectionSlider.onValueChanged.AddListener((value) =>
+            {
+                int v = Mathf.RoundToInt(value);
+                gazeErrorSettings.gazeAccuracyErrorDirection = v;
+                gazeAccuracyErrorDirectionValueLabel.text = v.ToString();
+            });
+        }
+
+        /// <summary>
+        /// Add a listener to the gaze accuracy error slider.
+        /// When the slider value changes, the gaze accuracy error
+        /// is updated to the value of the slider.
+        /// </summary>
+        private void SetupGazeAccErrSlider()
+        {
             if (gazeAccuracyErrorSlider != null)
+            {
                 gazeAccuracyErrorSlider.onValueChanged.AddListener((value) =>
                 {
                     gazeErrorSettings.gazeAccuracyError = value;
                     gazeAccuracyErrorValueLabel.text = value.ToString("0.00");
                 });
+            }
+        }
 
+        /// <summary>
+        /// Add a listener to the precision error mode dropdown.
+        /// When the dropdown value changes, the precision error mode
+        /// is updated to the value of the dropdown.
+        /// </summary>
+        private void SetupPrecErrModeDropdown()
+        {
             if (precisionErrorModeDropdown != null)
+            {
                 precisionErrorModeDropdown.onValueChanged.AddListener((value) =>
                 {
                     gazeErrorSettings.precisionErrorMode = (PrecisionErrorMode)System.Enum.ToObject(typeof(PrecisionErrorMode), value);
                 });
+            }
+        }
 
+        /// <summary>
+        /// Add a listener to the precision error slider.
+        /// When the slider value changes, the precision error
+        /// is updated to the value of the slider.
+        /// </summary>
+        private void SetupPrecErrSlider()
+        {
             if (precisionErrorSlider != null)
+            {
                 precisionErrorSlider.onValueChanged.AddListener((value) =>
                 {
                     gazeErrorSettings.precisionError = value;
                     precisionErrorValueLabel.text = value.ToString("0.00");
                 });
+            }
+        }
 
+        /// <summary>
+        /// Add a listener to the data loss probability slider.
+        /// When the slider value changes, the data loss probability
+        /// is updated to the value of the slider.
+        /// </summary>
+        private void SetupDataLossPrbSlider()
+        {
             if (dataLossProbabilitySlider != null)
+            {
                 dataLossProbabilitySlider.onValueChanged.AddListener((value) =>
                 {
                     gazeErrorSettings.dataLossProbability = value;
                     dataLossProbabilityValueLabel.text = value.ToString("0.00");
                 });
-        }
-
-        void Update()
-        {
-
+            }
         }
     }
 }

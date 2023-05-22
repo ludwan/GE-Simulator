@@ -24,7 +24,7 @@ namespace GazeErrorSimulator
         [SerializeField]
         [Tooltip("The color of the gaze visualisation")]
         protected Color _color = Color.red;
-
+        
         protected virtual void Start()
         {
             // Add a new data listener to the error simulator to get access
@@ -32,18 +32,34 @@ namespace GazeErrorSimulator
             _errorSimulator.OnNewErrorData += UpdatePosition;
         }
 
+        /// <summary>
+        /// Update the positions of the gaze visualisation based on the latest gaze data.
+        /// </summary>
+        /// <param name="data">The latest gaze data</param>
         public abstract void UpdatePosition(GazeErrorData data);
 
+        
+        /// <summary>
+        /// Set the active state of the gaze visualisation.
+        /// </summary>
+        /// <param name="activate">The active state of the gaze visualisation</param>
         public virtual void SetActive(bool activate)
         {
             _isActive = activate;
         }
 
+        /// <summary>
+        /// Get the active state of the gaze visualisation.
+        /// </summary>
         public virtual bool IsActive()
         {
             return _isActive;
         }
 
+        /// <summary>
+        /// Set the color of the gaze visualisation.
+        /// </summary>
+        /// <param name="color">The color of the gaze visualisation</param>
         public virtual void SetColor(Color color)
         {
             _color = color;

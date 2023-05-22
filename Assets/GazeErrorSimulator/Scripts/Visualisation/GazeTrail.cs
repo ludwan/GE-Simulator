@@ -32,6 +32,10 @@ namespace GazeErrorSimulator
             base.Start();
         }
 
+        /// <summary>
+        /// Update the positions of the gaze trail based on the latest gaze data.
+        /// </summary>
+        /// <param name="data">The latest gaze data</param>
         public override void UpdatePosition(GazeErrorData data)
         {
             // Ensure that the line can and should be rendered
@@ -58,6 +62,9 @@ namespace GazeErrorSimulator
             _particleSystem.SetParticles(_particles, _particles.Length);
         }
 
+        /// <summary>
+        /// Remove all particles from the particle system.
+        /// </summary>
         private void RemoveParticles()
         {
             // Make all the particles invisible (zero size)
@@ -68,6 +75,12 @@ namespace GazeErrorSimulator
             _particleSystem.SetParticles(_particles, _particles.Length);
         }
 
+        /// <summary>
+        /// Place a particle at the specified position with the specified color and size.
+        /// </summary>
+        /// <param name="pos">The 3D world position of the particle to place</param>
+        /// <param name="color">The color of the particle to place</param>
+        /// <param name="size">The size of the particle to place</param>
         private void PlaceParticle(Vector3 pos, Color color, float size)
         {
             // Get the next particle in the pool
@@ -85,6 +98,10 @@ namespace GazeErrorSimulator
             _particleIndex = (_particleIndex + 1) % _particles.Length;
         }
 
+        /// <summary>
+        /// Set the active state of the gaze trail.
+        /// </summary>
+        /// <param name="activate">The active state of the gaze trail</param>
         public override void SetActive(bool activate)
         {
             base.SetActive(activate);
