@@ -13,6 +13,12 @@ namespace GazeErrorSimulator
     public class VarjoEyeTracker : EyeTracker
     {
 #if VARJO_SDK
+        /// <summary>
+        /// Initialize the Varjo Eye Tracker.
+        /// This method must be called before calling GetGazeData.
+        /// Also sets the gaze output frequency to the maximum supported value.
+        /// </summary>
+        /// <returns>True if gaze is allowed and calibrated</returns>
         public override bool Initialize()
         {
             VarjoEyeTracking.SetGazeOutputFrequency(VarjoEyeTracking.GazeOutputFrequency.MaximumSupported);
@@ -56,6 +62,11 @@ namespace GazeErrorSimulator
         }
 
 #else
+        /// <summary>
+        /// Default implementation of the Initialize method for the Varjo Eye Tracker.
+        /// Always returns false when the VARJO_SDK compile flag is not set.
+        /// </summary>
+        /// <returns>False</returns>
         public override bool Initialize()
         {
             Debug.LogError("Could not initialize Varjo Eye Tracker.");

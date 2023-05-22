@@ -16,6 +16,11 @@ namespace GazeErrorSimulator
         private static bool eye_callback_registered = false;
         private Transform origin;
 
+        /// <summary>
+        /// Initialize the SRanipal Eye Tracker.
+        /// This method must be called before calling GetGazeData.
+        /// </summary>
+        /// <returns>True if it is a Vive Pro Eye and the eye tracker is working</returns>
         public override bool Initialize()
         {
             if (!SRanipal_Eye_API.IsViveProEye()) return false;
@@ -23,7 +28,12 @@ namespace GazeErrorSimulator
 
             return (SRanipal_Eye_Framework.Status == SRanipal_Eye_Framework.FrameworkStatus.WORKING);
         }
-            
+        
+        /// <summary>
+        /// Get the gaze data from the SRanipal Eye Tracker,
+        /// including the left eye, right eye, and cyclopean gaze data.
+        /// </summary>
+        /// <returns>The gaze data from the SRanipal Eye Tracker</returns>
         public override GazeErrorData GetGazeData()
         {
             if (SRanipal_Eye_Framework.Status != SRanipal_Eye_Framework.FrameworkStatus.WORKING &&
@@ -63,11 +73,20 @@ namespace GazeErrorSimulator
             return newData;
         }
 
+        /// <summary>
+        /// Get the transform of the origin, in this case the main camera.
+        /// </summary>
+        /// <returns>The main camera transform</returns>
         public override Transform GetOriginTransform() 
         { 
             return Camera.main.transform;
         }
 #else
+        /// <summary>
+        /// Default implementation of the Initialize method for the SRanipal Eye Tracker.
+        /// Always returns false when the VIVE_SDK compile flag is not set.
+        /// </summary>
+        /// <returns>False</returns>
         public override bool Initialize()
         {
             Debug.LogError("Could not initialize SRanipal Eye Tracker.");

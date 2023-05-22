@@ -4,52 +4,80 @@ using System.Linq;
 using UnityEngine;
 
 #if QUESTPRO_SDK
-
+using static OVREyeGaze;
+using static OVRPlugin;
 #endif
 
 namespace GazeErrorSimulator
 {
     public class QuestProEyeTracker : EyeTracker
     {
-#if QUESTPRO_SDK
-        private OVREyeGaze leftEye;
-        private OVREyeGaze rightEye;
+        // The below code is only the QUESTPRO_SDK compile flag is set, 
+        // which can be done through the ErrorSimulator component in the scene.
+#if QUESTPRO_SDK 
+        private OVRPlugin.EyeGazesState _currentEyeGazesState;
 
-        private OVRCameraRig ovrCameraRig;
-
+        /// <summary>
+        /// Initialize the Quest Pro Eye Tracker.
+        /// This method must be called before calling GetGazeData.
+        /// </summary>
+        /// <returns>True if eye tracking is enabled and the eye 
+        /// tracker was started succesfully.</returns>
         public override bool Initialize()
         {
-            ovrCameraRig = FindObjectOfType<OVRCameraRig>();
-            if (ovrCameraRig == null)
+            bool isEyeTrackingEnabled = OVRPlugin.eyeTrackingEnabled;
+            if (!isEyeTrackingEnabled)
+            {
+                Debug.LogError($"[{nameof(QuestProEyeTracker)}] Eye tracking is not enabled on this device.");
                 return false;
-
-            SetupOVREyeGaze(OVREyeGaze.EyeId.Left, out leftEye);
-            SetupOVREyeGaze(OVREyeGaze.EyeId.Right, out rightEye);
+            }
+            bool eyeTrackingStartedSuccesfully = OVRPlugin.StartEyeTracking();
+            if (!eyeTrackingStartedSuccesfully)
+            {
+                Debug.LogWarning($"[{nameof(QuestProEyeTracker)}] Failed to start eye tracking.");
+                return false;
+            }
 
             return true;
         }
 
+        /// <summary>
+        /// Get the gaze data from the Quest Pro Eye Tracker,
+        /// including the left eye, right eye, and cyclopean gaze data.
+        /// </summary>
+        /// <returns>The gaze data from the Quest Pro Eye Tracker</returns>
         public override GazeErrorData GetGazeData()
         {
+            bool gotEyeGazeState = OVRPlugin.GetEyeGazesState(OVRPlugin.Step.Render, -1, ref _currentEyeGazesState);
+            if (gotEyeGazeState == false)
+            {
+                Debug.Log($"[{nameof(QuestProEyeTracker)}] Failed to get eye gaze state.");
+                return null;
+            }
+
             GazeErrorData newData = new GazeErrorData();
 
             // Left Eye
-            newData.LeftEye.Timestamp = Time.unscaledTime;
-            newData.LeftEye.Origin = leftEye.transform.position;
-            newData.LeftEye.Direction = leftEye.transform.forward;
-            newData.LeftEye.isDataValid = leftEye.EyeTrackingEnabled;
+            EyeGazeState leftGaze = _currentEyeGazesState.EyeGazes[(int)EyeId.Left];
+            OVRPose leftGazePose = leftGaze.Pose.ToOVRPose();
+            newData.LeftEye.Timestamp = System.Convert.ToSingle(_currentEyeGazesState.Time);
+            newData.LeftEye.Origin = leftGazePose.position;
+            newData.LeftEye.Direction = leftGazePose.orientation * Vector3.forward;
+            newData.LeftEye.isDataValid = leftGaze.IsValid;
 
             // Right Eye
-            newData.RightEye.Timestamp = Time.unscaledTime;
-            newData.RightEye.Origin = rightEye.transform.position;
-            newData.RightEye.Direction = rightEye.transform.forward;
-            newData.RightEye.isDataValid = rightEye.EyeTrackingEnabled;
+            EyeGazeState rightGaze = _currentEyeGazesState.EyeGazes[(int)EyeId.Right];
+            OVRPose rightGazePose = rightGaze.Pose.ToOVRPose();
+            newData.RightEye.Timestamp = System.Convert.ToSingle(_currentEyeGazesState.Time);
+            newData.RightEye.Origin = rightGazePose.position;
+            newData.RightEye.Direction = rightGazePose.orientation * Vector3.forward;
+            newData.RightEye.isDataValid = rightGaze.IsValid;
 
-            // Gaze
-            newData.Gaze.Timestamp = Time.unscaledTime;
-            newData.Gaze.Origin = (leftEye.transform.position + rightEye.transform.position) / 2.0f;
-            newData.Gaze.Direction = Quaternion.Lerp(leftEye.transform.rotation, rightEye.transform.rotation, 0.5f) * Vector3.forward;
-            newData.Gaze.isDataValid = leftEye.EyeTrackingEnabled && rightEye.EyeTrackingEnabled;
+            // Gaze (Cyclopean)
+            newData.Gaze.Timestamp = System.Convert.ToSingle(_currentEyeGazesState.Time);
+            newData.Gaze.Origin = (leftGazePose.position + rightGazePose.position) / 2.0f;
+            newData.Gaze.Direction = Quaternion.Lerp(leftGazePose.orientation, rightGazePose.orientation, 0.5f) * Vector3.forward;
+            newData.Gaze.isDataValid = leftGaze.IsValid && rightGaze.IsValid;
 
             return newData;
         }
@@ -58,26 +86,12 @@ namespace GazeErrorSimulator
         {
             return Camera.main.transform;
         }
-
-        private void SetupOVREyeGaze(OVREyeGaze.EyeId eye, out OVREyeGaze eyeGaze)
-        {
-            // Convert enum to string value
-            GameObject eyeGO = new GameObject(System.Enum.GetName(typeof(OVREyeGaze.EyeId), eye) + "Eye");
-
-            eyeGO.transform.parent = ovrCameraRig.trackingSpace;
-            // Reset the transform
-            eyeGO.transform.localPosition = Vector3.zero;
-            eyeGO.transform.localRotation = Quaternion.identity;
-            eyeGO.transform.localScale = Vector3.one;
-
-            // Add the OVREyeGaze component
-            eyeGaze = eyeGO.AddComponent<OVREyeGaze>();
-            // Set the specified eye
-            eyeGaze.Eye = eye;
-            // Set the tracking mode to TrackingSpace to ensure working tracking
-            eyeGaze.TrackingMode = OVREyeGaze.EyeTrackingMode.TrackingSpace;
-        }
 #else
+        /// <summary>
+        /// Default implementation of the Initialize method for the Quest Pro Eye Tracker.
+        /// Always returns false when the QUESTPRO_SDK compile flag is not set.
+        /// </summary>
+        /// <returns>False</returns>
         public override bool Initialize()
         {
             Debug.LogError("Could not initialize Meta Quest Pro Eye Tracker.");
