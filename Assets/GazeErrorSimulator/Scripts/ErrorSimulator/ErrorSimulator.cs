@@ -112,12 +112,19 @@ namespace GazeErrorSimulator
             UpdateErrorSettings(leftEyeSettings);
         }
 
-        
+        /// <summary>
+        /// Toggle the error simulation on and off.
+        /// </summary>
         public void ToggleErrors()
         {
             isActive = !isActive;
         }
 
+        /// <summary>
+        /// Add error to the gaze data based on the gaze mode.
+        /// </summary>
+        /// <param name="data">The current gaze data</param>
+        /// <returns>The gaze data with error added</returns>
         private GazeErrorData AddError(GazeErrorData data)
         {
             switch (gazeMode)
@@ -137,7 +144,11 @@ namespace GazeErrorSimulator
             return data;
         }
 
-
+        /// <summary>
+        /// Add no error to the gaze data meaning that the gaze data is not changed.
+        /// </summary>
+        /// <param name="data">The current gaze data</param>
+        /// <returns>The gaze data with no error added</returns>
         private GazeErrorData AddNoError(GazeErrorData data)
         {
             data.Mode = ErrorMode.None;
@@ -153,6 +164,13 @@ namespace GazeErrorSimulator
             return data;
         }
 
+        /// <summary>
+        /// Add dependent error to the gaze data meaning that the gaze error 
+        /// is added to gaze data of the left and right gaze and the 
+        /// (cyclopean) gaze set dependently.
+        /// </summary>
+        /// <param name="data"></param>
+        /// <returns></returns>
         private GazeErrorData AddDependentError(GazeErrorData data)
         {
             data.Mode = ErrorMode.Dependent;
@@ -185,11 +203,17 @@ namespace GazeErrorSimulator
             return data;
         }
 
+        /// <summary>
+        /// Add independent error to the gaze data meaning that the gaze error 
+        /// is added to gaze data of the left, right, and (cyclopean) gaze independently.
+        /// </summary>
+        /// <param name="data"></param>
+        /// <returns></returns>
         private GazeErrorData AddIndependentError(GazeErrorData data)
         {
             if (data == null)
                 return data;
-                
+
             data.Mode = ErrorMode.Independent;
             //Left Eye
             data.LeftEye = AddErrorData(data.LeftEye, leftEyeSettings);
@@ -203,6 +227,12 @@ namespace GazeErrorSimulator
             return data;
         }
 
+        /// <summary>
+        /// Add error to the gaze data based on the gaze error settings.
+        /// </summary>
+        /// <param name="data">The current gaze data</param>
+        /// <param name="settings">The gaze error settings</param>
+        /// <returns>The gaze data with error added</returns>
         private EyeErrorData AddErrorData(EyeErrorData data, GazeErrorSettings settings)
         {
             data.AccuracyError = settings.gazeAccuracyError;
@@ -211,7 +241,7 @@ namespace GazeErrorSimulator
             data.PrecisionMode = settings.precisionErrorMode;
             data.DataLossProbability = settings.dataLossProbability;
 
-            if(!data.isDataValid)
+            if (!data.isDataValid)
             {
                 data.ErrorDirection = data.Direction;
                 data.isErrorDataValid = data.isDataValid;
@@ -221,19 +251,25 @@ namespace GazeErrorSimulator
                 Vector3 errorDirection = AddError(data.Direction, settings);
                 data.ErrorDirection = errorDirection;
 
-                if(errorDirection == Vector3.zero)
+                if (errorDirection == Vector3.zero)
                 {
-                    
+
                     data.isErrorDataValid = false;
                 }
                 else
                 {
                     data.isErrorDataValid = true;
                 }
-            }        
+            }
             return data;
         }
 
+        /// <summary>
+        /// Add error to the gaze direction based on the gaze error settings.
+        /// </summary>
+        /// <param name="dir">The current gaze direction</param>
+        /// <param name="settings">The gaze error settings</param>
+        /// <returns>The gaze direction with error added</returns>
         private Vector3 AddError(Vector3 dir, GazeErrorSettings settings)
         {
             SimulatorContainer container = simulators[settings];
@@ -244,7 +280,7 @@ namespace GazeErrorSimulator
             {
                 return dir;
             }
-            
+
             dir = container.accuracy.Inject(dir);
             switch (settings.precisionErrorMode)
             {
@@ -258,6 +294,9 @@ namespace GazeErrorSimulator
             return dir;
         }
 
+        /// <summary>
+        /// Initialize the eye tracker based on the eye tracker SDK.
+        /// </summary>
         private void InitEyeTracker()
         {
             if (_eyeTracker != null) return;
@@ -273,17 +312,29 @@ namespace GazeErrorSimulator
             }
         }
 
+        /// <summary>
+        /// Update the eye tracker variables based on the specified eye tracker SDK.
+        /// </summary>
         private void UpdateEyeTracker()
         {
             _eyeTrackerName = SimulatorConstants.GetEyeTrackerName(EyeTrackerSDK);
             _compilerFlagString = SimulatorConstants.GetEyeTrackerCompilerFlag(EyeTrackerSDK);
         }
 
+        /// <summary>
+        /// Get the eye tracker based on the specified eye tracker SDK.
+        /// </summary>
+        /// <returns>The desired eye tracker</returns>
         private EyeTracker GetEyeTracker()
         {
             return GetEyeTracker(_eyeTrackerName);
         }
 
+        /// <summary>
+        /// Get the eye tracker based on the specified eye tracker name.
+        /// </summary>
+        /// <param name="eyeTrackerName">The name of the eye tracker</param>
+        /// <returns>The desired eye tracker</returns>
         private EyeTracker GetEyeTracker(string eyeTrackerName)
         {
             Type eyeTrackerType = Type.GetType(eyeTrackerName);
@@ -303,6 +354,10 @@ namespace GazeErrorSimulator
             return null;
         }
 
+        /// <summary>
+        /// Update the error settings of the gaze error settings.
+        /// </summary>
+        /// <param name="settings">The gaze error settings</param>
         private void UpdateErrorSettings(GazeErrorSettings settings)
         {
             if (settings == null) return;
@@ -310,6 +365,11 @@ namespace GazeErrorSimulator
             UpdateErrorSettings(container, settings);
         }
 
+        /// <summary>
+        /// Update the (left, right, gaze) error settings of the gaze error settings.
+        /// </summary>
+        /// <param name="container">The container of the gaze error settings, either left, right, or gaze</param>
+        /// <param name="settings">The gaze error settings</param>
         private void UpdateErrorSettings(SimulatorContainer container, GazeErrorSettings settings)
         {
             container.accuracy.AccuracyAmplitude = settings.gazeAccuracyError;
@@ -319,6 +379,14 @@ namespace GazeErrorSimulator
             container.dataLoss.dataLossProbability = settings.dataLossProbability;
         }
 
+        /// <summary>
+        /// Add error simulator components to a new game object using the specified 
+        /// gaze error settings. Set the error simulator manager to this instance and
+        /// initialize the error simulator components.
+        /// </summary>
+        /// <param name="name"></param>
+        /// <param name="settings"></param>
+        /// <returns></returns>
         private SimulatorContainer AddComponents(string name, GazeErrorSettings settings)
         {
             SimulatorContainer container = new SimulatorContainer();
@@ -344,7 +412,6 @@ namespace GazeErrorSimulator
             UpdateErrorSettings(container, settings);
             return container;
         }
-
 
         private class SimulatorContainer
         {
